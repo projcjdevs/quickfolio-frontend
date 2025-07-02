@@ -3,6 +3,16 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  
+  --quickfolio-cream: #F5F4ED;
+  --quickfolio-white: #FFFFFF;
+  --quickfolio-dark: #333333;
+  --quickfolio-light-blue: #E8F4F4;
+  --quickfolio-purple: #cbcadb;
+  --quickfolio-yellow: #ffd52c;
+  --quickfolio-teal: #8dd9c4;
+  --quickfolio-pink: #ff5678;
 }
 
 @theme inline {
