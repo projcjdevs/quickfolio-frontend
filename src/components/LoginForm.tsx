@@ -37,7 +37,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose, onSwitch }) => {
     return (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
             <div className="bg-white w-[610.99px] h-[427.48px] rounded-[40px] shadow-xl flex overflow-hidden">
-                {/* Left Side */}
+                {/*left*/}
                 <div className="w-3/5 bg-[#E8F4F4] p-6 flex flex-col justify-start items-start">
                     <h2 className="text-2xl font-bold text-black mb-4 self-start ml-4">
                         QuickFolio
@@ -51,7 +51,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose, onSwitch }) => {
                     </div>
                 </div>
 
-                {/* Right Side */}
+                {/*right*/}
                 <form
                     onSubmit={handleLogin}
                     className="w-3/6 p-8 flex flex-col justify-start items-center pt-17"
