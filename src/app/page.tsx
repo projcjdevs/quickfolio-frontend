@@ -1,120 +1,271 @@
 'use client';
 
-import Image from "next/image";
-import { useState } from "react";
+import React from 'react';
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
+import { useState } from 'react';
+import Footer from '@/components/Footer';
+import Navbar from '@/components/NavBarLP';
 import RegistrationModal from "../components/RegistrationModal";
+import { motion } from 'framer-motion';
 
-export default function Home() {
+const App: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  return (
-    <>
-      <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-        <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-          <div className="flex items-center gap-4">
-            <Image
-              className="dark:invert"
-              src="/next.svg"
-              alt="Next.js logo"
-              width={180}
-              height={38}
-              priority
-            />
-            <div className="text-2xl font-bold text-[#333333] dark:text-white">
-              QuickFolio
-            </div>
-          </div>
-          
-          <div className="text-center sm:text-left">
-            <h1 className="text-4xl font-bold text-[#333333] dark:text-white mb-4">
-              Welcome to QuickFolio
-            </h1>
-            <p className="text-lg text-[#333333]/70 dark:text-white/70 mb-6">
-              Create. Connect. Showcase.
-            </p>
-          </div>
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-[#333333] text-white gap-2 hover:bg-[#333333]/90 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-          >
-            Register Now
-          </button>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  // Feature cards data
+  const featureCards = [
+    {
+      title: "Built for Professionals",
+      description: "Clean, modern templates designed for every industry and career stage",
+      icon: (
+        <svg className="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+      )
+    },
+    {
+      title: "Always Up-to-Date",
+      description: "Update your portfolio anytime and your card link always shows the latest version",
+      icon: (
+        <svg className="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      )
+    },
+    {
+      title: "Lightning Fast",
+      description: "Optimized for mobile and desktop with instant loading times",
+      icon: (
+        <svg className="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      )
+    }
+  ];
+
+  // Step cards data with proper Motion 
+  const stepCards = [
+    {
+      title: "Step 1\nCreate",
+      description: "Pick a template and add your content—fast and easy.",
+      image: "/images/landing-page/laying.png",
+      position: "absolute -top-48 -right-6 z-10",
+      motionProps: {
+        animate: {
+          y: [0, -6, 0],
+          rotate: [0, -2, 2, 0],
+        },
+        transition: {
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut" as const,
+        }
+      }
+    },
+    {
+      title: "Step 2\nCustomize",
+      description: "Edit colors, fonts, and layout to fit your brand perfectly.",
+      image: "/images/landing-page/reading.png",
+      position: "absolute -bottom-28 z-10",
+      motionProps: {
+        animate: {
+          y: [0, -7, 0],
+        },
+        transition: {
+          duration: 7,
+          repeat: Infinity,
+          ease: "easeInOut" as const,
+          repeatType: "reverse" as const
+        }
+      }
+    },
+    {
+      title: "Step 3\nPublish",
+      description: "Launch your website live in seconds—no code needed.",
+      image: "/images/landing-page/swinging.png",
+      position: "absolute -top-25 -right-18 z-10",
+      motionProps: {
+        animate: {
+          y: [0, -3, 0],
+          rotate: [0, 2, -2, 0],
+        },
+        transition: {
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut" as const
+        }
+      }
+    }
+  ];
+
+  // Floating boxes with proper Motion 
+  const floatingBoxes = [
+    {
+      className: "absolute top-68 right-18 w-48 h-24 bg-white rounded-xl shadow-md z-20",
+      motionProps: {
+        animate: { y: [0, -9, 0] },
+        transition: { 
+          duration: 3.5, 
+          repeat: Infinity, 
+          ease: "easeInOut" as const 
+        }
+      }
+    },
+    {
+      className: "absolute top-10 -right-1 w-36 h-16 bg-white rounded-xl shadow-md z-20",
+      motionProps: {
+        animate: { y: [0, -7, 0] },
+        transition: { 
+          duration: 3, 
+          repeat: Infinity, 
+          ease: "easeInOut" as const 
+        }
+      }
+    },
+    {
+      className: "absolute top-30 right-110 w-44 h-22 bg-white rounded-xl shadow-md z-20",
+      motionProps: {
+        animate: { y: [0, -11, 0] },
+        transition: { 
+          duration: 4, 
+          repeat: Infinity, 
+          ease: "easeInOut" as const 
+        }
+      }
+    }
+  ];
+
+  return (
+    <div className="bg-[#2D3748] min-h-screen flex flex-col">
+      <div className="flex-1 font-sans bg-white text-gray-800 border-[70px] border-[#2D3748] m-4">
+        {/* Navigation */}
+        <Navbar />
+
+        {/* Top Intro Text & Image */}
+        <main className="px-6 py-10 bg-[#F5F4ED]">
+          <section className="py-15 px-35">
+            <div className="grid gap-15 md:grid-cols-2">
+              <div>
+                <h1 className="text-7xl text-black font-bold"> One Page,  </h1>
+                <h1 className="text-7xl text-black font-bold"> Infinite  </h1>
+                <h1 className="text-7xl text-black font-bold"> Potential. </h1>
+                <p className="text-2xl text-black max-w-sm">
+                  Whether you're applying, networking, or just vibing — make sure your link feels like you.
+                </p>
+                
+                {/* CTA Button */}
+                <div className="mt-8 relative z-50">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setIsModalOpen(true);
+                      console.log('Button clicked!'); // Debug log
+                    }}
+                    className="relative z-50 inline-block rounded-full bg-[#333333] text-white font-medium text-sm sm:text-base px-6 py-3 transition-all duration-200 hover:bg-[#333333]/90 hover:scale-105 active:scale-95 cursor-pointer border-none outline-none focus:outline-none focus:ring-2 focus:ring-[#333333]/50 focus:ring-offset-2 min-w-[140px] text-center"
+                    type="button"
+                    style={{
+                      pointerEvents: 'auto',
+                      touchAction: 'manipulation',
+                      userSelect: 'none',
+                      WebkitUserSelect: 'none',
+                      display: 'inline-block',
+                      lineHeight: '1.5'
+                    }}
+                  >
+                    Register Now
+                  </button>
+                </div>
+              </div>
+
+              <div className="relative">
+                {/* Main character (now behind the boxes) */}
+                <motion.img
+                  src="/images/landing-page/float.png"
+                  alt="main pic"
+                  className="w-100 h-100 outline-none ring-0 focus:outline-none focus:ring-0 relative z-0"
+                  animate={{
+                    y: [0, -4, 0],
+                    rotate: [0, -3, 3, 0]
+                  }}
+                  transition={{
+                    duration: 7,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    repeatType: "reverse"
+                  }}
+                />
+
+                {/* Floating boxes */}
+                {floatingBoxes.map((box, index) => (
+                  <motion.div
+                    key={index}
+                    className={box.className}
+                    {...box.motionProps}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Steps section */}
+          <section className="px-40 py-20">
+            <div className="grid gap-16 md:grid-cols-3">
+              {stepCards.map((card, index) => (
+                <div key={index} className="relative flex flex-col items-center">
+                  <div className={card.position}>
+                    <motion.img
+                      src={card.image}
+                      alt={card.title.split('\n')[1].toLowerCase()}
+                      className="w-80 h-80 object-contain"
+                      {...card.motionProps}
+                    />
+                  </div>
+                  <div className="bg-white shadow-md px-6 pt-24 pb-8 w-full text-center border-gray-200 min-h-[350px]">
+                    <h2 className="text-xl font-bold mb-2 whitespace-pre-line">{card.title}</h2>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {card.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Feature cards */}
+          <div className="grid gap-8 md:grid-cols-3 bg-white border border-gray-200 rounded-xl shadow-sm w-full max-w-5xl mx-auto p-8 my-16">
+            {featureCards.map((card, index) => (
+              <a 
+                key={index}
+                href="#"
+                className="group relative p-6 rounded-lg hover:bg-gray-50 transition-all duration-300"
+              >
+                <div className="flex flex-col items-center">
+                  <div className="mb-4 p-3 rounded-full bg-gray-100 group-hover:bg-gray-200 transition-colors duration-300">
+                    {card.icon}
+                  </div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2 group-hover:scale-[1.02] transition-transform duration-300">
+                    {card.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 text-center max-w-xs leading-relaxed group-hover:translate-y-0.5 transition-transform duration-300">
+                    {card.description}
+                  </p>
+                  <div className="absolute bottom-0 left-1/2 h-[2px] w-0 bg-gray-800 transform -translate-x-1/2 group-hover:w-[calc(100%-3rem)] transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]" />
+                </div>
+              </a>
+            ))}
+          </div>
+        </main>
+      </div>
+
+      <Footer />
+      
+      {/* Registration Modal */}
+      <RegistrationModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
-    
-    <RegistrationModal 
-      isOpen={isModalOpen}
-      onClose={() => setIsModalOpen(false)}
-    />
-    </>
   );
-}
+};
+
+export default App;
