@@ -2,6 +2,7 @@
 
 import { Poppins } from 'next/font/google';
 import AnimatedHeader from '@/components/AnimatedLogo';
+import AuthButton from '@/components/AuthButton';
 
 const poppins = Poppins({ 
     weight: '700',
@@ -17,9 +18,9 @@ const Navbar = () => {
                     <AnimatedHeader />
                 </div>
 
-                <button className="bg-[#1d1d1b] text-[#F5F4ED] px-6 py-2 rounded-md font-normal rounded-xl hover:bg-opacity-90 transition duration-200">
-                    Get Started
-                </button>
+                <div>
+                    <AuthButton />
+                </div>
             </div>
         </header>
     );
