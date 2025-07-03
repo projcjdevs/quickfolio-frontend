@@ -5,10 +5,13 @@ import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import { useState } from 'react';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/NavBarLP';
+
+import RegistrationModal from "../components/RegistrationModal";
 import { motion } from 'framer-motion';
 
 const App: React.FC = () => {
-  // const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   // Feature cards data
   const featureCards = [
@@ -136,7 +139,9 @@ const App: React.FC = () => {
   return (
     <div className="bg-[#2D3748] min-h-screen flex flex-col">
       <div className="flex-1 font-sans bg-white text-gray-800 border-[70px] border-[#2D3748] m-4">
-        {/* header placeholder yes oo tama */}
+
+        {/* Navigation */}
+
         <Navbar />
 
         {/* Top Intro Text & Image */}
@@ -150,6 +155,32 @@ const App: React.FC = () => {
                 <p className="text-2xl text-black max-w-sm">
                   Whether you're applying, networking, or just vibing — make sure your link feels like you.
                 </p>
+
+                
+                {/* CTA Button */}
+                <div className="mt-8 relative z-50">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setIsModalOpen(true);
+                      console.log('Button clicked!'); // Debug log
+                    }}
+                    className="relative z-50 inline-block rounded-full bg-[#333333] text-white font-medium text-sm sm:text-base px-6 py-3 transition-all duration-200 hover:bg-[#333333]/90 hover:scale-105 active:scale-95 cursor-pointer border-none outline-none focus:outline-none focus:ring-2 focus:ring-[#333333]/50 focus:ring-offset-2 min-w-[140px] text-center"
+                    type="button"
+                    style={{
+                      pointerEvents: 'auto',
+                      touchAction: 'manipulation',
+                      userSelect: 'none',
+                      WebkitUserSelect: 'none',
+                      display: 'inline-block',
+                      lineHeight: '1.5'
+                    }}
+                  >
+                    Register Now
+                  </button>
+                </div>
+
               </div>
 
               <div className="relative">
@@ -233,6 +264,13 @@ const App: React.FC = () => {
       </div>
 
       <Footer />
+      
+      {/* Registration Modal */}
+      <RegistrationModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+
     </div>
   );
 };
