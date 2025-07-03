@@ -5,11 +5,13 @@ import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import { useState } from 'react';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/NavBarLP';
+
 import RegistrationModal from "../components/RegistrationModal";
 import { motion } from 'framer-motion';
 
 const App: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   // Feature cards data
   const featureCards = [
@@ -137,7 +139,9 @@ const App: React.FC = () => {
   return (
     <div className="bg-[#2D3748] min-h-screen flex flex-col">
       <div className="flex-1 font-sans bg-white text-gray-800 border-[70px] border-[#2D3748] m-4">
+
         {/* Navigation */}
+
         <Navbar />
 
         {/* Top Intro Text & Image */}
@@ -151,6 +155,7 @@ const App: React.FC = () => {
                 <p className="text-2xl text-black max-w-sm">
                   Whether you're applying, networking, or just vibing — make sure your link feels like you.
                 </p>
+
                 
                 {/* CTA Button */}
                 <div className="mt-8 relative z-50">
@@ -175,6 +180,7 @@ const App: React.FC = () => {
                     Register Now
                   </button>
                 </div>
+
               </div>
 
               <div className="relative">
@@ -264,6 +270,7 @@ const App: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
+
     </div>
   );
 };
