@@ -269,6 +269,7 @@ const App: React.FC = () => {
       <RegisForm 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        onSwitch={() => {}} 
       />
 
     </div>
