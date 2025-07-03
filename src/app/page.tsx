@@ -144,10 +144,10 @@ const App: React.FC = () => {
           <section className="py-15 px-35">
             <div className="grid gap-15 md:grid-cols-2">
               <div>
-                <h1 className="text-7xl font-bold"> One Page,  </h1>
-                <h1 className="text-7xl font-bold"> Infinite  </h1>
-                <h1 className="text-7xl font-bold"> Potential. </h1>
-                <p className="text-2xl max-w-sm">
+                <h1 className="text-7xl text-black font-bold"> One Page,  </h1>
+                <h1 className="text-7xl text-black font-bold"> Infinite  </h1>
+                <h1 className="text-7xl text-black font-bold"> Potential. </h1>
+                <p className="text-2xl text-black max-w-sm">
                   Whether you're applying, networking, or just vibing — make sure your link feels like you.
                 </p>
               </div>
@@ -195,7 +195,7 @@ const App: React.FC = () => {
                       {...card.motionProps}
                     />
                   </div>
-                  <div className="bg-white shadow-md px-6 pt-24 pb-8 w-full text-center border min-h-[350px]">
+                  <div className="bg-white shadow-md px-6 pt-24 pb-8 w-full text-center border-gray-200 min-h-[350px]">
                     <h2 className="text-xl font-bold mb-2 whitespace-pre-line">{card.title}</h2>
                     <p className="text-gray-600 text-sm leading-relaxed">
                       {card.description}
