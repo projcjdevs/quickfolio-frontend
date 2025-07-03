@@ -264,16 +264,5 @@ const App: React.FC = () => {
       </div>
 
       <Footer />
-      
-      {/* Registration Modal */}
-      <RegisForm 
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSwitch={() => {}} 
-      />
-
-    </div>
-  );
-};
 
 export default App;
