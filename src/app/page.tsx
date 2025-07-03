@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/NavBarLP';
 
-import RegistrationModal from "../components/RegistrationModal";
+import RegisForm from "../components/RegisForm";
 import { motion } from 'framer-motion';
 
 const App: React.FC = () => {
