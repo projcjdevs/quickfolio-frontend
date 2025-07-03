@@ -266,7 +266,7 @@ const App: React.FC = () => {
       <Footer />
       
       {/* Registration Modal */}
-      <RegistrationModal 
+      <RegisForm 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
