@@ -1,50 +1,79 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
-import { useState } from 'react';
-import Footer from '@/components/Footer';
-import Navbar from '@/components/NavBarLP';
+import { useState } from "react";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/NavBarLP";
 
-import RegisForm from "../components/RegisForm";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const App: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-
   // Feature cards data
   const featureCards = [
     {
       title: "Built for Professionals",
-      description: "Clean, modern templates designed for every industry and career stage",
+      description:
+        "Clean, modern templates designed for every industry and career stage",
       icon: (
-        <svg className="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        <svg
+          className="h-6 w-6 text-gray-800"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+          />
         </svg>
-      )
+      ),
     },
     {
       title: "Always Up-to-Date",
-      description: "Update your portfolio anytime and your card link always shows the latest version",
+      description:
+        "Update your portfolio anytime and your card link always shows the latest version",
       icon: (
-        <svg className="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <svg
+          className="h-6 w-6 text-gray-800"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
         </svg>
-      )
+      ),
     },
     {
       title: "Lightning Fast",
-      description: "Optimized for mobile and desktop with instant loading times",
+      description:
+        "Optimized for mobile and desktop with instant loading times",
       icon: (
-        <svg className="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        <svg
+          className="h-6 w-6 text-gray-800"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M13 10V3L4 14h7v7l9-11h-7z"
+          />
         </svg>
-      )
-    }
+      ),
+    },
   ];
 
-  // Step cards data with proper Motion 
+  // Step cards data with proper Motion
   const stepCards = [
     {
       title: "Step 1\nCreate",
@@ -60,12 +89,13 @@ const App: React.FC = () => {
           duration: 5,
           repeat: Infinity,
           ease: "easeInOut" as const,
-        }
-      }
+        },
+      },
     },
     {
       title: "Step 2\nCustomize",
-      description: "Edit colors, fonts, and layout to fit your brand perfectly.",
+      description:
+        "Edit colors, fonts, and layout to fit your brand perfectly.",
       image: "/images/landing-page/reading.png",
       position: "absolute -bottom-28 z-10",
       motionProps: {
@@ -76,9 +106,9 @@ const App: React.FC = () => {
           duration: 7,
           repeat: Infinity,
           ease: "easeInOut" as const,
-          repeatType: "reverse" as const
-        }
-      }
+          repeatType: "reverse" as const,
+        },
+      },
     },
     {
       title: "Step 3\nPublish",
@@ -93,53 +123,55 @@ const App: React.FC = () => {
         transition: {
           duration: 5,
           repeat: Infinity,
-          ease: "easeInOut" as const
-        }
-      }
-    }
+          ease: "easeInOut" as const,
+        },
+      },
+    },
   ];
 
-  // Floating boxes with proper Motion 
+  // Floating boxes with proper Motion
   const floatingBoxes = [
     {
-      className: "absolute top-68 right-18 w-48 h-24 bg-white rounded-xl shadow-md z-20",
+      className:
+        "absolute top-68 right-18 w-48 h-24 bg-white rounded-xl shadow-md z-20",
       motionProps: {
         animate: { y: [0, -9, 0] },
-        transition: { 
-          duration: 3.5, 
-          repeat: Infinity, 
-          ease: "easeInOut" as const 
-        }
-      }
+        transition: {
+          duration: 3.5,
+          repeat: Infinity,
+          ease: "easeInOut" as const,
+        },
+      },
     },
     {
-      className: "absolute top-10 -right-1 w-36 h-16 bg-white rounded-xl shadow-md z-20",
+      className:
+        "absolute top-10 -right-1 w-36 h-16 bg-white rounded-xl shadow-md z-20",
       motionProps: {
         animate: { y: [0, -7, 0] },
-        transition: { 
-          duration: 3, 
-          repeat: Infinity, 
-          ease: "easeInOut" as const 
-        }
-      }
+        transition: {
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut" as const,
+        },
+      },
     },
     {
-      className: "absolute top-30 right-110 w-44 h-22 bg-white rounded-xl shadow-md z-20",
+      className:
+        "absolute top-30 right-110 w-44 h-22 bg-white rounded-xl shadow-md z-20",
       motionProps: {
         animate: { y: [0, -11, 0] },
-        transition: { 
-          duration: 4, 
-          repeat: Infinity, 
-          ease: "easeInOut" as const 
-        }
-      }
-    }
+        transition: {
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut" as const,
+        },
+      },
+    },
   ];
 
   return (
     <div className="bg-[#2D3748] min-h-screen flex flex-col">
       <div className="flex-1 font-sans bg-white text-gray-800 border-[70px] border-[#2D3748] m-4">
-
         {/* Navigation */}
 
         <Navbar />
@@ -149,38 +181,15 @@ const App: React.FC = () => {
           <section className="py-15 px-35">
             <div className="grid gap-15 md:grid-cols-2">
               <div>
-                <h1 className="text-7xl text-black font-bold"> One Page,  </h1>
-                <h1 className="text-7xl text-black font-bold"> Infinite  </h1>
+                <h1 className="text-7xl text-black font-bold"> One Page, </h1>
+                <h1 className="text-7xl text-black font-bold"> Infinite </h1>
                 <h1 className="text-7xl text-black font-bold"> Potential. </h1>
                 <p className="text-2xl text-black max-w-sm">
-                  Whether you're applying, networking, or just vibing — make sure your link feels like you.
+                  Whether you're applying, networking, or just vibing — make
+                  sure your link feels like you.
                 </p>
 
-                
-                {/* CTA Button */}
-                <div className="mt-8 relative z-50">
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setIsModalOpen(true);
-                      console.log('Button clicked!'); // Debug log
-                    }}
-                    className="relative z-50 inline-block rounded-full bg-[#333333] text-white font-medium text-sm sm:text-base px-6 py-3 transition-all duration-200 hover:bg-[#333333]/90 hover:scale-105 active:scale-95 cursor-pointer border-none outline-none focus:outline-none focus:ring-2 focus:ring-[#333333]/50 focus:ring-offset-2 min-w-[140px] text-center"
-                    type="button"
-                    style={{
-                      pointerEvents: 'auto',
-                      touchAction: 'manipulation',
-                      userSelect: 'none',
-                      WebkitUserSelect: 'none',
-                      display: 'inline-block',
-                      lineHeight: '1.5'
-                    }}
-                  >
-                    Register Now
-                  </button>
-                </div>
-
+                {/* CTA Button removed */}
               </div>
 
               <div className="relative">
@@ -191,13 +200,13 @@ const App: React.FC = () => {
                   className="w-100 h-100 outline-none ring-0 focus:outline-none focus:ring-0 relative z-0"
                   animate={{
                     y: [0, -4, 0],
-                    rotate: [0, -3, 3, 0]
+                    rotate: [0, -3, 3, 0],
                   }}
                   transition={{
                     duration: 7,
                     repeat: Infinity,
                     ease: "easeInOut",
-                    repeatType: "reverse"
+                    repeatType: "reverse",
                   }}
                 />
 
@@ -217,17 +226,22 @@ const App: React.FC = () => {
           <section className="px-40 py-20">
             <div className="grid gap-16 md:grid-cols-3">
               {stepCards.map((card, index) => (
-                <div key={index} className="relative flex flex-col items-center">
+                <div
+                  key={index}
+                  className="relative flex flex-col items-center"
+                >
                   <div className={card.position}>
                     <motion.img
                       src={card.image}
-                      alt={card.title.split('\n')[1].toLowerCase()}
+                      alt={card.title.split("\n")[1].toLowerCase()}
                       className="w-80 h-80 object-contain"
                       {...card.motionProps}
                     />
                   </div>
                   <div className="bg-white shadow-md px-6 pt-24 pb-8 w-full text-center border-gray-200 min-h-[350px]">
-                    <h2 className="text-xl font-bold mb-2 whitespace-pre-line">{card.title}</h2>
+                    <h2 className="text-xl font-bold mb-2 whitespace-pre-line">
+                      {card.title}
+                    </h2>
                     <p className="text-gray-600 text-sm leading-relaxed">
                       {card.description}
                     </p>
@@ -240,7 +254,7 @@ const App: React.FC = () => {
           {/* Feature cards */}
           <div className="grid gap-8 md:grid-cols-3 bg-white border border-gray-200 rounded-xl shadow-sm w-full max-w-5xl mx-auto p-8 my-16">
             {featureCards.map((card, index) => (
-              <a 
+              <a
                 key={index}
                 href="#"
                 className="group relative p-6 rounded-lg hover:bg-gray-50 transition-all duration-300"
@@ -262,14 +276,6 @@ const App: React.FC = () => {
           </div>
         </main>
       </div>
-
-      {isModalOpen && (
-        <RegisForm 
-          isOpen={true}
-          onClose={() => setIsModalOpen(false)}
-          onSwitch={() => {}}
-        />
-      )}
 
       <Footer />
     </div>
