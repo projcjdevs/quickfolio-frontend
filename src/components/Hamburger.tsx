@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, LogOut } from 'react-feather';
 import SignOutModal from './SignOutModal';
+import { FiUser, FiCreditCard, FiSettings, FiGrid } from 'react-icons/fi';
 
 interface HamburgerProps {
     isOpen: boolean;
@@ -83,7 +84,44 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
                             </div>
                         </div>
 
-                        <hr className="border-t border-gray-200 mx-4" />
+                        <hr className="border-t border-gray-200 mx-0" />
+
+                        {/* options */}
+                        <div className="px-6 py-2 space-y-4">
+
+                        {/* profile section */}
+                        <div className="flex items-center gap-4 cursor-pointer mt-3 mb-4 hover:opacity-70">
+                            <FiUser size={20} className="text-[#1d1d1b]" />
+                            <span className="text-sm text-[#1d1d1b] font-medium">Manage Profile</span>
+                        </div>
+
+                        <hr className="border-t border-gray-200 -mx-6" />
+
+                        {/* bills & payment section */}
+                        <div className="flex items-center gap-4 cursor-pointer mt-3 mb-4 hover:opacity-70">
+                            <FiCreditCard size={20} className="text-[#1d1d1b]" />
+                            <span className="text-sm text-[#1d1d1b] font-medium">Billings & Payments</span>
+                        </div>
+
+                        <hr className="border-t border-gray-200 -mx-6" />
+
+                        {/* settings section */}
+                        <div className="flex items-center gap-4 cursor-pointer mt-3 mb-4 hover:opacity-70">
+                            <FiSettings size={20} className="text-[#1d1d1b]" />
+                            <span className="text-sm text-[#1d1d1b] font-medium">Settings</span>
+                        </div>
+
+                        <hr className="border-t border-gray-200 -mx-6" />
+
+                        {/* qr code */}
+                        <div className="flex items-center gap-4 cursor-pointer mt-3 mb-4 hover:opacity-70">
+                            <FiGrid size={20} className="text-[#1d1d1b]" />
+                            <span className="text-sm text-[#1d1d1b] font-medium">QR Code</span>
+                        </div>
+
+                        <hr className="border-t border-gray-200 -mx-6" />
+                        </div>
+
                     </motion.div>
                 )}
             </AnimatePresence>
