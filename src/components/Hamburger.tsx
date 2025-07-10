@@ -96,7 +96,7 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
                         <div className="flex px-6 h-[120px] items-center gap-5 mt-6 mb-6 relative">
                             <div className="flex-shrink-0">
                                 <img
-                                    src={user.avatarUrl || '/sample-avatar.png'}
+                                    src={user.avatarUrl || '/Images/avatar/sample-avatar.png'}
                                     alt="User Avatar"
                                     className="w-[72px] md:w-[92px] md:h-[87px] aspect-square object-cover rounded-none"
                                 />
