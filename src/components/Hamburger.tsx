@@ -51,7 +51,7 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
                         animate={{ x: 0 }}
                         exit={{ x: 400 }}
                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                        className="fixed top-0 right-0 h-screen w-[370px] max-w-full bg-white shadow-lg z-[1000]"
+                        className="fixed top-0 right-0 h-screen w-[361px] max-w-full bg-white shadow-lg z-[1000]"
                         ref={panelRef}
                     >
                         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
