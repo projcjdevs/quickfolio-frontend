@@ -41,7 +41,7 @@ const NavBarDB = () => {
                             aria-label="Open Hamburger Panel"
                             onClick={() => setIsHamburgerOpen(true)}
                         >
-                            <Menu size={24} color="#333" />
+                            <Menu size={24} color="#333" strokeWidth={3.5}/>
                         </button>
                     </div>
 
@@ -51,7 +51,7 @@ const NavBarDB = () => {
                             aria-label="Open Hamburger Panel"
                             onClick={() => setIsHamburgerOpen(true)}
                         >
-                            <Menu size={24} color="#333" />
+                            <Menu size={24} color="#333" strokeWidth={3.5} />
                         </button>
                     </div>
                 </div>

@@ -18,17 +18,13 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
     // click outside to close (excluding som)
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            const clickedOutsidePanel =
-                panelRef.current && !panelRef.current.contains(event.target as Node);
-            const clickedOutsideModal =
-                modalRef.current && !modalRef.current.contains(event.target as Node);
-
-            // ignore clicks inside the modal
-            if (clickedOutsidePanel) {
-            const clickedInsideModal = modalRef.current?.contains(event.target as Node);
-            if (!clickedInsideModal) {
+            if (
+                panelRef.current &&
+                !panelRef.current.contains(event.target as Node) &&
+                !isSignOutModalOpen 
+            ) {
                 onClose();
-            }}
+            }
         };
 
         if (isOpen) {
@@ -38,7 +34,7 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [isOpen, onClose]);
+    }, [isOpen, onClose, isSignOutModalOpen]);
 
     const handleSignOut = () => {
         setIsSignOutModalOpen(false);
@@ -59,14 +55,14 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
                     >
                         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
                             <button onClick={onClose} aria-label="Close Panel">
-                                <Menu size={24} color="#333" />
+                                <Menu size={24} color="#333" strokeWidth={3.5} />
                             </button>
 
                             <button
                                 onClick={() => setIsSignOutModalOpen(true)}
                                 aria-label="Sign Out"
                             >
-                                <LogOut size={22} color="#333" />
+                                <LogOut size={22} color="#333" strokeWidth={3.5} />
                             </button>
                         </div>
 
