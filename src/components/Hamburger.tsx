@@ -15,7 +15,7 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
     const modalRef = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>;
     const [isSignOutModalOpen, setIsSignOutModalOpen] = useState(false);
 
-    // Click outside to close (excluding SignOutModal)
+    // click outside to close (excluding som)
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             const clickedOutsidePanel =
@@ -23,8 +23,7 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
             const clickedOutsideModal =
                 modalRef.current && !modalRef.current.contains(event.target as Node);
 
-            // Close if clicked outside the hamburger panel
-            // BUT ignore clicks inside the modal (SignOutModal)
+            // ignore clicks inside the modal
             if (clickedOutsidePanel) {
             const clickedInsideModal = modalRef.current?.contains(event.target as Node);
             if (!clickedInsideModal) {
@@ -71,7 +70,7 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
                             </button>
                         </div>
 
-                        {/* User Info Section */}
+                        {/* avatar, name & description */}
                         <div className="flex px-6 h-[120px] items-center gap-5 mt-6 mb-6">
                             <div className="flex-shrink-0">
                                 <img
@@ -93,7 +92,7 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
                 )}
             </AnimatePresence>
 
-            {/* Sign Out Modal */}
+            {/* sign out panel / modal */}
             <SignOutModal
                 isVisible={isSignOutModalOpen}
                 onClose={() => setIsSignOutModalOpen(false)}
