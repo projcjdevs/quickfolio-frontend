@@ -7,7 +7,7 @@ interface Props {
     isVisible: boolean;
     onClose: () => void;
     onConfirm: () => void;
-    modalRef: React.RefObject<HTMLDivElement>;
+    modalRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const SignOutModal = ({ isVisible, onClose, onConfirm, modalRef }: Props) => {
