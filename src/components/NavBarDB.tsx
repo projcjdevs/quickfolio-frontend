@@ -25,7 +25,7 @@ const NavBarDB = () => {
                     </div>
 
                     {/* desktop nav */}
-                    <div className="hidden md:flex items-center space-x-8 text-[#333] font-normal text-sm">
+                    <div className="hidden md:flex items-center space-x-8 text-[#333] font-normal text-base md:text-[17px] lg:text-[18px]">
                         {links.map((link) => (
                             <a
                                 key={link.name}
@@ -62,7 +62,7 @@ const NavBarDB = () => {
                         <a
                             key={link.name}
                             href={link.href}
-                            className="text-[#333] hover:underline text-sm"
+                            className="text-[#333] hover:underline text-base font-normal"
                         >
                             {link.name}
                         </a>
