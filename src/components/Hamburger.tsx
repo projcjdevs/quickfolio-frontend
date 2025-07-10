@@ -22,7 +22,7 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
         description: 'Description'
     });
 
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);  // editing user info (local state)
     const [editedName, setEditedName] = useState(user.name);
     const [editedDescription, setEditedDescription] = useState(user.description);
 
@@ -46,11 +46,12 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
         };
     }, [isOpen, onClose, isSignOutModalOpen]);
 
-    const handleSignOut = () => {
+    const handleSignOut = () => {   // backend call to sign out can be added here
         setIsSignOutModalOpen(false);
         console.log('Signed out!');
     };
 
+    // saves edited user info to local state
     const handleSave = () => {
         setUser({
             ...user,
@@ -79,7 +80,7 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
                         className="fixed top-0 right-0 h-screen w-[361px] max-w-full bg-white shadow-lg z-[1000]"
                         ref={panelRef}
                     >
-                        {/* Header */}
+                        {/* hamburger panel header */}
                         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
                             <button onClick={onClose} aria-label="Close Panel">
                                 <Menu size={24} color="#333" strokeWidth={3.5} />
@@ -92,7 +93,7 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
                             </button>
                         </div>
 
-                        {/* Avatar + Name/Description */}
+                        {/* avatar + name/description */}
                         <div className="flex px-6 h-[120px] items-center gap-5 mt-6 mb-6 relative">
                             <div className="flex-shrink-0">
                                 <img
@@ -148,7 +149,7 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
 
                         <hr className="border-t border-gray-200 mx-0" />
 
-                        {/* Menu Options */}
+                        {/* profile, billings, settings, qr */}
                         <div className="px-6 py-2 space-y-4">
                             <div className="flex items-center gap-4 cursor-pointer mt-3 mb-4 hover:opacity-70">
                                 <FiUser size={20} className="text-[#1d1d1b]" />
@@ -178,7 +179,7 @@ const Hamburger = ({ isOpen, onClose }: HamburgerProps) => {
                 )}
             </AnimatePresence>
 
-            {/* Sign Out Modal */}
+            {/* som / panel */}
             <SignOutModal
                 isVisible={isSignOutModalOpen}
                 onClose={() => setIsSignOutModalOpen(false)}
