@@ -14,7 +14,7 @@ export default function DashboardPage() {
     setIsModalOpen(false);
 
     // Navigate to the editor with the selected template
-    router.push(`/portfolio/edit?template=${templateId}`);
+    router.push(`/edit?template=${templateId}`);
   };
 
   return (
