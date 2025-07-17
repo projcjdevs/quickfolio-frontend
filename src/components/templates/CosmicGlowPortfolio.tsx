@@ -123,22 +123,47 @@ export default function CosmicGlowPortfolio({ data = {} as PortfolioData }) {
 
         {/* Main Content */}
         <div className="w-full max-w-3xl mx-auto px-6 py-12">
-          {/* Name Section */}
+         {/* Name Section */}
           <motion.div className="text-center mb-20" initial={{ opacity: 0, y: 40 }} animate={controls}>
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2" style={{ color: COLORS.text }}>
-              {mergedData.name.split(' ')[0]}
-              <span style={{ color: COLORS.accent }}> {mergedData.name.split(' ')[1]}</span>
-            </h1>
-            <motion.p
-              className="text-lg md:text-xl tracking-wider"
-              style={{ color: COLORS.accent }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.2 }}
+          <motion.h1 
+            className="text-4xl md:text-5xl font-bold tracking-tight mb-2 relative"
+            style={{ 
+              color: COLORS.text,
+              letterSpacing: '0.05em'
+              }}
+            whileHover={{
+              textShadow: `0 0 12px ${COLORS.accent}60`,
+              transition: { duration: 0.3 }
+              }}
             >
-              {mergedData.title}
-            </motion.p>
-          </motion.div>
+              <span className="relative inline-block">
+              {mergedData.name}
+              {/* Subtle underline accent */}
+            <motion.span 
+              className="absolute bottom-0 left-0 h-[2px] w-full"
+              style={{ backgroundColor: COLORS.accent }}
+              initial={{ scaleX: 0 }}
+              animate={{ 
+                scaleX: 1,
+                transition: { delay: 1.5, duration: 0.8, ease: "easeOut" }
+                }}
+              />
+            </span>
+          </motion.h1>
+  
+        <motion.p
+          className="text-lg md:text-xl tracking-wider mt-4"
+          style={{ 
+            color: COLORS.text,
+            opacity: 0.9
+            }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.9 }}
+          transition={{ delay: 1.8 }}
+          >
+          {mergedData.title}
+        </motion.p>
+      </motion.div>
 
           <AnimatePresence>
             {showContent && (

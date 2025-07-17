@@ -1,37 +1,31 @@
-// src/app/preview/page.tsx
 "use client";
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PortfolioData, DEFAULT_PROFILE } from '@/components/types';
 import dynamic from 'next/dynamic';
+import { FiX, FiRotateCw, FiAlertCircle, FiMoon, FiSun } from 'react-icons/fi';
 
-// Available templates - dynamically import to avoid SSR issues
+const PreviewUIContext = React.createContext({
+  darkMode: true,
+  toggleDarkMode: () => {}
+});
+
 const templateComponents = {
   cosmic: dynamic(() => import('@/components/templates/CosmicGlowPortfolio'), {
-    loading: () => <TemplatePlaceholder name="Cosmic Glow" />,
+    loading: () => <TemplateSkeleton />,
     ssr: false
   }),
   simple: dynamic(() => import('@/components/templates/SimplePortfolio'), {
-    loading: () => <TemplatePlaceholder name="Simple Portfolio" />,
+    loading: () => <TemplateSkeleton />,
     ssr: false
   })
 };
 
-// Template names for display
-const templateNames = {
-  cosmic: "Cosmic Glow",
-  simple: "Simple Portfolio"
-};
-
-// Placeholder component while template loads
-function TemplatePlaceholder({ name }: { name: string }) {
+function TemplateSkeleton() {
   return (
-    <div className="flex items-center justify-center min-h-[70vh] bg-gray-100">
-      <div className="text-center p-8 bg-white rounded shadow-md">
-        <div className="animate-pulse w-16 h-16 rounded-full bg-blue-200 mx-auto mb-4"></div>
-        <h3 className="text-lg font-medium">Loading {name} Template...</h3>
-        <p className="text-gray-500 mt-2">Please wait...</p>
-      </div>
+    <div className="flex flex-col items-center justify-center min-h-[60vh] transition-colors duration-300">
+      <FiRotateCw className="h-8 w-8 animate-spin text-gray-400" />
+      <p className="mt-4 text-gray-500">Loading portfolio template...</p>
     </div>
   );
 }
@@ -41,38 +35,71 @@ export default function PreviewPage() {
     data: PortfolioData;
     templateId: string;
   } | null>(null);
-  
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [darkMode, setDarkMode] = useState(true);
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    // Load preview data from localStorage
-    try {
-      if (typeof window !== 'undefined') {
+    setHasMounted(true);
+    document.documentElement.classList.add('transition-colors', 'duration-300');
+    
+    const loadPreviewData = async () => {
+      try {
+        setIsLoading(true);
+        // Only access localStorage after component mounts
         const saved = localStorage.getItem('preview-data');
         if (saved) {
           setPreviewData(JSON.parse(saved));
         } else {
-          setError("No preview data found. Please return to the editor.");
+          setError("No portfolio data found");
         }
+      } catch (e) {
+        setError("Invalid portfolio data");
+      } finally {
+        setIsLoading(false);
       }
-    } catch (e) {
-      console.error("Error loading preview data:", e);
-      setError("Failed to load portfolio data. Please try again.");
-    }
+    };
+
+    loadPreviewData();
+
+    return () => {
+      document.documentElement.classList.remove('transition-colors', 'duration-300');
+    };
   }, []);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  // Don't render anything until component has mounted
+  if (!hasMounted) {
+    return null;
+  }
+
+  if (isLoading) {
+    return (
+      <div className={`min-h-screen flex items-center justify-center transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
+        <div className="text-center">
+          <FiRotateCw className="mx-auto h-8 w-8 animate-spin" />
+          <p className="mt-4">Loading preview...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="text-center p-8 bg-white rounded shadow-md max-w-md">
-          <div className="text-red-500 text-5xl mb-4">⚠️</div>
-          <h1 className="text-xl font-bold mb-4">Error</h1>
-          <p className="text-gray-700 mb-6">{error}</p>
-          <button 
-            onClick={() => window.close()} 
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+      <div className={`min-h-screen flex items-center justify-center transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
+        <div className={`p-6 rounded-lg max-w-md transition-colors duration-300 ${darkMode ? 'bg-gray-800' : 'bg-[#F5F4ED]'}`}>
+          <FiAlertCircle className="mx-auto h-12 w-12 text-red-500" />
+          <h3 className="mt-4 text-lg font-medium">Error</h3>
+          <p className="mt-2">{error}</p>
+          <button
+            onClick={() => window.close()}
+            className={`mt-6 px-4 py-2 rounded-md transition-colors duration-200 ${darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
           >
-            Close Preview
+            Close
           </button>
         </div>
       </div>
@@ -81,35 +108,61 @@ export default function PreviewPage() {
 
   if (!previewData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
-          <p className="mt-4 text-lg">Loading preview...</p>
+      <div className={`min-h-screen flex items-center justify-center transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
+        <div className={`p-6 rounded-lg max-w-md transition-colors duration-300 ${darkMode ? 'bg-gray-800' : 'bg-[#F5F4ED]'}`}>
+          <h3 className="text-lg font-medium">No Preview</h3>
+          <p className="mt-2">Please create a portfolio first</p>
+          <button
+            onClick={() => window.close()}
+            className={`mt-6 px-4 py-2 rounded-md transition-colors duration-200 ${darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
+          >
+            Close
+          </button>
         </div>
       </div>
     );
   }
 
-  const { data = DEFAULT_PROFILE, templateId = 'cosmic' } = previewData;
-  const TemplateComponent = templateComponents[templateId as keyof typeof templateComponents] || templateComponents.cosmic;
-  const templateName = templateNames[templateId as keyof typeof templateNames] || 'Unknown Template';
+  const TemplateComponent = templateComponents[previewData.templateId as keyof typeof templateComponents] || templateComponents.cosmic;
 
   return (
-    <div className="min-h-screen">
-      <div className="sticky top-0 left-0 w-full bg-gray-800 p-4 flex justify-between items-center z-50">
-        <h1 className="text-white font-medium">Portfolio Preview</h1>
-        <p className="text-gray-300">Template: {templateName}</p>
-        <button 
-          onClick={() => window.close()} 
-          className="px-3 py-1 bg-gray-700 hover:bg-gray-600 text-white rounded"
-        >
-          Close Preview
-        </button>
+    <PreviewUIContext.Provider value={{ darkMode, toggleDarkMode }}>
+      <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
+        <header className={`sticky top-0 z-50 p-4 transition-colors duration-300 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-[#F5F4ED] border-gray-200'} border-b`}>
+          <div className="flex justify-between items-center max-w-7xl mx-auto">
+            <h1 className="font-medium">Portfolio Preview</h1>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={toggleDarkMode}
+                className="p-2 rounded-full hover:bg-opacity-10 hover:bg-white transition-colors duration-200"
+                aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
+              >
+                {darkMode ? (
+                  <FiSun className="text-yellow-300" />
+                ) : (
+                  <FiMoon className="text-gray-600" />
+                )}
+              </button>
+              <button
+                onClick={() => window.close()}
+                className={`px-3 py-1 rounded-md transition-colors duration-200 ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}`}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <main className="pb-11">
+          <TemplateComponent data={previewData.data} />
+        </main>
+
+        <footer className={`fixed bottom-0 left-0 right-0 p-3 transition-colors duration-300 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-[#F5F4ED] border-gray-200'} border-t`}>
+          <div className="max-w-7xl mx-auto text-sm text-center transition-colors duration-300">
+            Preview only • Changes not saved
+          </div>
+        </footer>
       </div>
-      
-      <div className="pt-16">
-        <TemplateComponent data={data} />
-      </div>
-    </div>
+    </PreviewUIContext.Provider>
   );
 }
