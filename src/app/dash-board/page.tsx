@@ -1,8 +1,8 @@
 "use client";
 
-import Navbar from "@/components/NavBarLP";
+import NavBarDB from "@/components/NavBarDB";
 import PortfolioDisplayBox from "@/components/PortfolioDisplayBox/page";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 export default function DashboardPage() {
     const [boxes, setBoxes] = useState<string[]>([]);
@@ -18,7 +18,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-[#F5F4ED]">
-      <Navbar />
+      <NavBarDB />
 
       <div>
         <main className="px-6 pt-10 bg-[#F5F4ED]">
