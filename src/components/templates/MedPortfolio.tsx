@@ -69,7 +69,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
   }, [mergedData.education, mergedData.experience]); // Recompute on data change
 
   return (
-    <div className="bg-white min-h-screen font-sans">
+    <div className="bg-white flex flex-col min-h-screen font-sans">
       {/* Header Section */}
       <div className="w-full">
         <motion.div
@@ -87,7 +87,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                 transition: { duration: 0.3 },
               }}
             >
-              {mergedData.name || "Mocha Pande"}
+              {mergedData.name || " "}
             </motion.h1>
             <motion.p
               className="text-lg mb-7"
@@ -96,7 +96,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
               animate={{ opacity: 0.9 }}
               transition={{ delay: 0.3 }}
             >
-              {mergedData.title || "Registered Nurse"}
+              {mergedData.title || " "}
             </motion.p>
           </div>
           <div className="text-right">
@@ -127,7 +127,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
       </div>
 
       {/* Body Content */}
-      <div className="max-w-4xl mx-auto px-6 py-8 relative">
+      <div className="max-w-4xl mx-auto px-6 py-8 flex-1 relative">
         <AnimatePresence>
           {showContent && (
             <motion.div
@@ -139,15 +139,13 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
               {/* Left Column: Professional Summary and Certifications */}
               <div>
                 {/* Professional Summary */}
-                {mergedData.title && (
-                  <Section title="Professional Summary" icon={<FiUserCheck style={{ color: "#4d4d4f" }} />} accentColor="#4d4d4f">
-                    <ContentItem accentColor="#4d4d4f">
-                      <p className="text-sm leading-normal" style={{ color: "#4d4d4f" }}>
-                        {mergedData.summary || "Add your professional summary here."}
-                      </p>
-                    </ContentItem>
-                  </Section>
-                )}
+                <Section title="Professional Summary" icon={<FiUserCheck style={{ color: "#4d4d4f" }} />} accentColor="#4d4d4f">
+                  <ContentItem accentColor="#4d4d4f">
+                    <p className="text-sm leading-normal" style={{ color: "#4d4d4f" }}>
+                      {mergedData.summary || "Add your professional summary here."}
+                    </p>
+                  </ContentItem>
+                </Section>
 
                 {/* Certifications */}
                 {mergedData.certifications && mergedData.certifications.length > 0 && (
@@ -218,6 +216,12 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
             </motion.div>
           )}
         </AnimatePresence>
+      </div>
+
+      {/* Footer Section */}
+      <div className="w-full">
+        <div className="w-12/13 mx-auto border-t-3 border-solid" style={{ borderColor: "#043382" }} />
+        <div style={{ backgroundColor: COLORS.highlight, height: '60px' }} />
       </div>
     </div>
   );
