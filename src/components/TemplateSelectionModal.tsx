@@ -23,6 +23,12 @@ const TEMPLATE_OPTIONS: Template[] = [
     description: 'A clean, minimalist design that lets your work speak for itself.',
     preview: '/images/templates/simple-preview.jpg'
   },
+  {
+    id: 'medical',
+    name: 'Medical Minimal',
+    description: 'A minimalist medical-themed design with soft colors and clean layout.',
+    preview: '/images/template-previews/medical-minimal.png' // Update with your Canva preview image path
+  },
 ];
 
 interface TemplateSelectionModalProps {

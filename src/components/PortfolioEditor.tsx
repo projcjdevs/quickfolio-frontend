@@ -36,10 +36,17 @@ const AVAILABLE_TEMPLATES = {
     })
   },
   simple: {
-    name: "Simple Portfolio", 
+    name: "Simple Portfolio",
     component: dynamic(() => import("@/components/templates/SimplePortfolio"), {
       ssr: false,
       loading: () => <TemplatePlaceholder name="Simple Portfolio" />
+    })
+  },
+  medical: {
+    name: "Medical Minimal",
+    component: dynamic(() => import("@/components/templates/MedPortfolio"), {
+      ssr: false,
+      loading: () => <TemplatePlaceholder name="Medical Minimal" />
     })
   },
 };
@@ -70,11 +77,10 @@ const TEMPLATES = {
     duration: "",
     highlights: [""],
   },
-  leadership: {
-    role: "",
-    organization: "",
-    duration: "",
-    highlights: [""],
+  certification: { // Changed from leadership to certification
+    name: "",
+    date: "",
+    issuer: "",
   },
 };
 
@@ -214,15 +220,22 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
     }));
   };
 
-  const addItem = (field: "education" | "experience" | "leadership") => {
+  const addItem = (field: "education" | "experience" | "certifications" | "leadership") => {
     setPortfolioData((prev) => ({
       ...prev,
-      [field]: [...(prev[field] || []), TEMPLATES[field]],
+      [field]: [
+        ...(prev[field] || []),
+        TEMPLATES[
+          field === "certifications" || field === "leadership"
+            ? "certification"
+            : field
+        ],
+      ],
     }));
   };
 
   const updateItem = (
-    field: "education" | "experience" | "leadership",
+    field: "education" | "experience" | "certifications" | "leadership",
     index: number,
     key: string,
     value: any
@@ -235,7 +248,7 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
   };
 
   const removeItem = (
-    field: "education" | "experience" | "leadership",
+    field: "education" | "experience" | "certifications" | "leadership",
     index: number
   ) => {
     setPortfolioData((prev) => ({
@@ -312,6 +325,13 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
             value={portfolioData.title}
             onChange={(e) => updateBasicInfo("title", e.target.value)}
           />
+          {selectedTemplate === "medical" && (
+            <TextInput
+              label="Professional Summary"
+              value={portfolioData.title || ""} // Placeholder; consider adding a summary field
+              onChange={(e) => updateBasicInfo("title", e.target.value)} // Update to summary field if added
+            />
+          )}
         </EditorSection>
 
         {/* Contact Info Section */}
@@ -321,16 +341,25 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
             value={portfolioData.contact?.email || ""}
             onChange={(e) => updateContact("email", e.target.value)}
           />
-          <TextInput
-            label="GitHub Username"
-            value={portfolioData.contact?.github || ""}
-            onChange={(e) => updateContact("github", e.target.value)}
-          />
+          {selectedTemplate !== "medical" && (
+            <TextInput
+              label="GitHub Username"
+              value={portfolioData.contact?.github || ""}
+              onChange={(e) => updateContact("github", e.target.value)}
+            />
+          )}
           <TextInput
             label="LinkedIn Username"
             value={portfolioData.contact?.linkedin || ""}
             onChange={(e) => updateContact("linkedin", e.target.value)}
           />
+          {selectedTemplate === "medical" && (
+            <TextInput
+              label="PRC License Number"
+              value={portfolioData.contact?.prc || ""}
+              onChange={(e) => updateContact("prc", e.target.value)}
+            />
+          )}
         </EditorSection>
 
         {/* Education Section */}
@@ -369,7 +398,7 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
                 { key: "company", label: "Company" },
                 { key: "duration", label: "Duration" },
               ]}
-              onUpdate={(key, value) => updateItem("experience", i, key, value)}
+              onUpdate={(key: string, value: any) => updateItem("experience", i, key, value)}
               onRemove={() => removeItem("experience", i)}
             >
               <div className="mt-4">
@@ -428,28 +457,28 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
           ))}
         </EditorSection>
 
-        {/* Leadership Section */}
+        {/* Certifications Section (replaces Leadership for Medical Minimal) */}
         <EditorSection
-          title="Leadership"
-          icon={<FiAward />}
-          onAdd={() => addItem("leadership")}
+          title={selectedTemplate === "medical" ? "Certifications" : "Leadership"}
+          icon={selectedTemplate === "medical" ? <FiAward /> : <FiAward />}
+          onAdd={() => addItem(selectedTemplate === "medical" ? "certifications" : "leadership")}
         >
-          {portfolioData.leadership?.map((lead, i) => (
+          {(portfolioData[selectedTemplate === "medical" ? "certifications" : "leadership"] || []).map((item, i) => (
             <ItemEditor
-              key={`lead-${i}`}
-              item={lead}
+              key={`${selectedTemplate === "medical" ? "cert" : "lead"}-${i}`}
+              item={item}
               fields={[
-                { key: "role", label: "Role" },
-                { key: "organization", label: "Organization" },
-                { key: "duration", label: "Duration" },
+                { key: "name", label: selectedTemplate === "medical" ? "Certification Name" : "Role" },
+                { key: "date", label: selectedTemplate === "medical" ? "Date" : "Duration" },
+                { key: "issuer", label: selectedTemplate === "medical" ? "Issuer" : "Organization", optional: true },
               ]}
-              onUpdate={(key, value) => updateItem("leadership", i, key, value)}
-              onRemove={() => removeItem("leadership", i)}
+              onUpdate={(key, value) => updateItem(selectedTemplate === "medical" ? "certifications" : "leadership", i, key, value)}
+              onRemove={() => removeItem(selectedTemplate === "medical" ? "certifications" : "leadership", i)}
             />
           ))}
         </EditorSection>
 
-        {/* Color Customization
+        {/* Color Customization */}
         <EditorSection title="Color Scheme">
           {Object.entries(DEFAULT_COLORS).map(([key]) => (
             <div key={key} className="mb-4">
@@ -482,8 +511,8 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
               </div>
             </div>
           ))}
-        </EditorSection> */}
-      {/* Dipasureditosikit*/}
+        </EditorSection>
+
         {/* Actions */}
         <div className="flex gap-4 mt-8">
           <button
@@ -542,18 +571,23 @@ function TextInput({
   label,
   value,
   onChange,
+  disabled = false,
+  className = "",
 }: {
   label: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
+  className?: string;
 }) {
   return (
-    <div className="mb-4">
+    <div className={`mb-4 ${className}`}>
       <label className="block mb-1 font-medium text-gray-300">{label}</label>
       <input
         type="text"
         value={value}
         onChange={onChange}
+        disabled={disabled}
         className="w-full p-2 bg-gray-700 rounded text-white"
       />
     </div>
@@ -568,7 +602,7 @@ function ItemEditor({
   onRemove,
 }: {
   item: any;
-  fields: { key: string; label: string }[];
+  fields: { key: string; label: string; optional?: boolean }[];
   children?: React.ReactNode;
   onUpdate: (key: string, value: any) => void;
   onRemove: () => void;
@@ -589,6 +623,7 @@ function ItemEditor({
           label={field.label}
           value={item[field.key] || ""}
           onChange={(e) => onUpdate(field.key, e.target.value)}
+          disabled={field.optional && !item[field.key]} // Disable if optional and empty
         />
       ))}
       {children}
