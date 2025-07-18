@@ -3,8 +3,8 @@
 
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { FiMail, FiLinkedin } from "react-icons/fi";
-import { FiBook, FiBriefcase, FiUserCheck } from "react-icons/fi";
-import { useEffect, useState } from "react";
+import { FiBook, FiBriefcase, FiUserCheck, FiAward } from "react-icons/fi"; // Added FiAward
+import { useEffect, useState, useRef } from "react"; // Added useRef
 import { PortfolioData, DEFAULT_PROFILE } from "../types";
 
 const DEFAULT_PARTICLE_COUNT = 0; // No particles for minimalist design
@@ -35,12 +35,17 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
       },
       particleDensity: data?.config?.particleDensity || DEFAULT_PARTICLE_COUNT,
     },
+    summary: data?.summary || "", // Use summary field
   };
 
   const COLORS = mergedData.config.colors;
 
   const controls = useAnimation();
   const [showContent, setShowContent] = useState(false);
+  const [educationHeight, setEducationHeight] = useState(100); // Default height to ensure initial rendering
+  const [experienceHeight, setExperienceHeight] = useState(100); // Default height to ensure initial rendering
+  const educationRef = useRef<HTMLDivElement>(null);
+  const experienceRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const sequence = async () => {
@@ -54,10 +59,17 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
     sequence();
   }, [controls]);
 
+  useEffect(() => {
+    if (educationRef.current) {
+      setEducationHeight(educationRef.current.scrollHeight + 10); // Add 10px excess
+    }
+    if (experienceRef.current) {
+      setExperienceHeight(experienceRef.current.scrollHeight + 10); // Add 10px excess
+    }
+  }, [mergedData.education, mergedData.experience]); // Recompute on data change
+
   return (
-    <div
-      className="bg-white min-h-screen font-sans"
-    >
+    <div className="bg-white min-h-screen font-sans">
       {/* Header Section */}
       <div className="w-full">
         <motion.div
@@ -115,11 +127,11 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
       </div>
 
       {/* Body Content */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-6 py-8 relative">
         <AnimatePresence>
           {showContent && (
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 gap-8"
+              className="grid grid-cols-1 md:grid-cols-[minmax(275px,1fr)_minmax(350px,2.5fr)] gap-8" // Adjusted widths
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
@@ -128,10 +140,10 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
               <div>
                 {/* Professional Summary */}
                 {mergedData.title && (
-                  <Section title="PROFESSIONAL SUMMARY" icon={<FiUserCheck />} accentColor={COLORS.accent}>
-                    <ContentItem icon={<FiUserCheck />} accentColor={COLORS.accent}>
-                      <p className="text-base text-gray-700 leading-relaxed">
-                        {mergedData.title} {/* Placeholder for summary */}
+                  <Section title="Professional Summary" icon={<FiUserCheck style={{ color: "#4d4d4f" }} />} accentColor="#4d4d4f">
+                    <ContentItem accentColor="#4d4d4f">
+                      <p className="text-sm leading-normal" style={{ color: "#4d4d4f" }}>
+                        {mergedData.summary || "Add your professional summary here."}
                       </p>
                     </ContentItem>
                   </Section>
@@ -139,15 +151,15 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
 
                 {/* Certifications */}
                 {mergedData.certifications && mergedData.certifications.length > 0 && (
-                  <Section title="CERTIFICATIONS" icon={<FiUserCheck />} accentColor={COLORS.accent}>
+                  <Section title="Certifications" icon={<FiAward style={{ color: "#4d4d4f" }} />} accentColor="#4d4d4f">
                     {mergedData.certifications.map((cert, i) => (
-                      <ContentItem key={`cert-${i}`} icon={<FiUserCheck />} accentColor={COLORS.accent}>
+                      <ContentItem key={`cert-${i}`} accentColor="#4d4d4f">
                         <div className="flex flex-col">
-                          <h3 className="text-lg font-medium" style={{ color: COLORS.text }}>
+                          <h3 className="text-lg font-medium" style={{ color: "#4d4d4f" }}>
                             {cert.name}
                           </h3>
-                          <p className="text-sm text-gray-600">{cert.issuer || "Certified"}</p>
-                          <p className="text-sm text-gray-600">{cert.date}</p>
+                          <p className="text-sm" style={{ color: "#4d4d4f" }}>{cert.issuer || "Certified"}</p>
+                          <p className="text-sm" style={{ color: "#4d4d4f" }}>{cert.date}</p>
                         </div>
                       </ContentItem>
                     ))}
@@ -159,39 +171,47 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
               <div>
                 {/* Education */}
                 {mergedData.education && mergedData.education.length > 0 && (
-                  <Section title="EDUCATION" icon={<FiBook />} accentColor={COLORS.accent}>
+                  <Section title="Education" icon={<FiBook style={{ color: "#4d4d4f", position: 'relative', zIndex: 1 }} />} accentColor="#4d4d4f" className="relative">
                     {mergedData.education.map((edu, i) => (
-                      <ContentItem key={`edu-${i}`} icon={<FiBook />} accentColor={COLORS.accent}>
+                      <ContentItem key={`edu-${i}`} accentColor="#4d4d4f" ref={mergedData.education && i === mergedData.education.length - 1 ? educationRef : null}>
                         <div className="flex flex-col">
-                          <h3 className="text-lg font-medium" style={{ color: COLORS.text }}>
+                          <h3 className="text-lg font-medium leading-tight" style={{ color: "#4d4d4f" }}>
                             {edu.institution}
                           </h3>
-                          <p className="text-sm text-gray-600">{edu.degree}</p>
-                          <p className="text-sm text-gray-600">{edu.details}</p>
+                          <p className="text-sm font-semibold italic leading-relaxed" style={{ color: "#4d4d4f" }}>{edu.degree}</p>
+                          <p className="text-sm" style={{ color: "#4d4d4f" }}>{edu.details}</p>
                         </div>
                       </ContentItem>
                     ))}
+                    {/* Vertical Line under Education Icon */}
+                    <div className="absolute w-px bg-[#608abf] z-0" style={{ left: "0.5rem", top: '2rem', height: `${educationHeight}px` }}>
+                      <div className="absolute top-0 transform -translate-x-1/2 w-3 h-3 bg-[#608abf] rounded-full"></div>
+                    </div>
                   </Section>
                 )}
 
                 {/* Experience */}
                 {mergedData.experience && mergedData.experience.length > 0 && (
-                  <Section title="EXPERIENCE" icon={<FiBriefcase />} accentColor={COLORS.accent}>
+                  <Section title="Experience" icon={<FiBriefcase style={{ color: "#4d4d4f", position: 'relative', zIndex: 1 }} />} accentColor="#4d4d4f" className="relative">
                     {mergedData.experience.map((exp, i) => (
-                      <ContentItem key={`exp-${i}`} icon={<FiBriefcase />} accentColor={COLORS.accent}>
+                      <ContentItem key={`exp-${i}`} accentColor="#4d4d4f" ref={mergedData.experience && i === mergedData.experience.length - 1 ? experienceRef : null}>
                         <div className="flex flex-col">
-                          <h3 className="text-lg font-medium" style={{ color: COLORS.text }}>
+                          <h3 className="text-lg font-medium leading-tight" style={{ color: "#4d4d4f" }}>
                             {exp.role} at {exp.company}
                           </h3>
-                          <p className="text-sm text-gray-600">{exp.duration}</p>
-                          <ul className="list-disc pl-5 mt-2 text-gray-700">
+                            <p className="text-sm" style={{ color: "#4d4d4f" }}>{exp.duration}</p>
+                          <ul className="list-disc pl-5 mt-2">
                             {exp.highlights.map((item, j) => (
-                              <li key={j} className="text-sm">{item}</li>
+                              <li key={j} className="text-sm" style={{ color: "#4d4d4f" }}>{item}</li>
                             ))}
                           </ul>
                         </div>
                       </ContentItem>
                     ))}
+                    {/* Vertical Line under Experience Icon */}
+                    <div className="absolute w-px bg-[#608abf] z-0" style={{ left: "0.5rem", top: '2rem', height: `${experienceHeight}px` }}>
+                      <div className="absolute top-0 transform -translate-x-1/2 w-3 h-3 bg-[#608abf] rounded-full"></div>
+                    </div>
                   </Section>
                 )}
               </div>
@@ -204,12 +224,12 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
 }
 
 // Reusable Components
-function Section({ title, icon, children, accentColor }: { title: string; icon: React.ReactNode; children: React.ReactNode; accentColor: string }) {
+function Section({ title, icon, children, accentColor, className }: { title: string; icon: React.ReactNode; children: React.ReactNode; accentColor: string; className?: string }) {
   return (
-    <motion.section className="mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+    <motion.section className={`mb-6 ${className}`} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
       <div className="flex items-center gap-2 mb-3">
         <div style={{ color: accentColor }}>{icon}</div>
-        <h2 className="text-xl font-medium" style={{ color: accentColor }}>
+        <h2 className="text-xl font-bold" style={{ color: accentColor }}>
           {title}
         </h2>
       </div>
@@ -218,12 +238,9 @@ function Section({ title, icon, children, accentColor }: { title: string; icon: 
   );
 }
 
-function ContentItem({ children, icon, accentColor }: { children: React.ReactNode; icon: React.ReactNode; accentColor: string }) {
+function ContentItem({ children, icon, accentColor, ref }: { children: React.ReactNode; icon?: React.ReactNode; accentColor: string; ref?: React.Ref<HTMLDivElement> }) {
   return (
-    <motion.div className="mb-4 pl-6 relative" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-      <div className="absolute left-0 top-0 p-1 rounded-full" style={{ backgroundColor: `${accentColor}20`, color: accentColor }}>
-        {icon}
-      </div>
+    <motion.div className="mb-4 pl-6" ref={ref} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
       <div className="space-y-1">{children}</div>
     </motion.div>
   );

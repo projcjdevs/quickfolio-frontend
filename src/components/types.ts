@@ -1,5 +1,3 @@
-// src/components/types.ts
-
 export interface EducationItem {
   institution: string;
   degree: string;
@@ -24,9 +22,9 @@ export interface LeadershipItem {
 }
 
 export interface CertificationItem {
-  name: string;       // e.g., "Board Certified Physician"
-  date: string;       // e.g., "2023-07-01"
-  issuer?: string;    // e.g., "American Medical Association" (optional)
+  name: string;
+  date: string;
+  issuer?: string;
   icon?: React.ReactNode;
 }
 
@@ -34,7 +32,7 @@ export interface ContactInfo {
   email?: string;
   github?: string;
   linkedin?: string;
-  prc?: string; // Added PRC property for editable license number
+  prc?: string;
 }
 
 export interface ColorScheme {
@@ -52,10 +50,11 @@ import React from 'react';
 export interface PortfolioData {
   name: string;
   title: string;
+  summary?: string;
   education?: EducationItem[];
   experience?: ExperienceItem[];
   leadership?: LeadershipItem[];
-  certifications?: CertificationItem[]; // New field for medical certifications
+  certifications?: CertificationItem[];
   contact: ContactInfo;
   config?: {
     colors?: Partial<ColorScheme>;
@@ -78,10 +77,11 @@ export const DEFAULT_COLORS: ColorScheme = {
 export const DEFAULT_PROFILE: PortfolioData = {
   name: "Your Name",
   title: "Professional Title",
+  summary: "",
   education: [],
   experience: [],
   leadership: [],
-  certifications: [], // Initialize with empty array
+  certifications: [],
   contact: {
     email: "",
     github: "",

@@ -328,8 +328,8 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
           {selectedTemplate === "medical" && (
             <TextInput
               label="Professional Summary"
-              value={portfolioData.title || ""} // Placeholder; consider adding a summary field
-              onChange={(e) => updateBasicInfo("title", e.target.value)} // Update to summary field if added
+              value={portfolioData.summary || ""} 
+              onChange={(e) => updateBasicInfo("summary", e.target.value)}
             />
           )}
         </EditorSection>
