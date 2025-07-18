@@ -116,8 +116,8 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                 </a>
               )}
             </div>
-            <span className="text-[13px] font-poppins block mt-1" style={{ color: "#353535" }}> {/* Moved below icons with margin */}
-              {mergedData.contact.prc || `PRC #${Math.floor(Math.random() * 1000000 + 1000000)}`} {/* Editable PRC */}
+            <span className="text-[13px] font-poppins block mt-1" style={{ color: "#353535" }}>
+              {mergedData.contact.prc ? `PRC #${mergedData.contact.prc}` : ""}
             </span>
           </div>
         </motion.div>
@@ -131,7 +131,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
         <AnimatePresence>
           {showContent && (
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-[minmax(275px,1fr)_minmax(350px,2.5fr)] gap-8" // Adjusted widths
+              className="grid grid-cols-1 md:grid-cols-[minmax(260px,1fr)_minmax(300px,2.5fr)] gap-8" // Adjusted widths
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
@@ -158,7 +158,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                           <h3 className="text-lg font-medium" style={{ color: "#4d4d4f" }}>
                             {cert.name}
                           </h3>
-                          <p className="text-sm" style={{ color: "#4d4d4f" }}>{cert.issuer || "Certified"}</p>
+                          <p className="text-sm" style={{ color: "#4d4d4f" }}>{cert.issuer}</p>
                           <p className="text-sm" style={{ color: "#4d4d4f" }}>{cert.date}</p>
                         </div>
                       </ContentItem>
