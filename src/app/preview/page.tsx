@@ -19,7 +19,7 @@ const templateComponents = {
     loading: () => <TemplateSkeleton />,
     ssr: false
   }),
-  medPortfolio: dynamic(() => import('@/components/templates/MedPortfolio'), { // Added MedPortfolio
+  medPortfolio: dynamic(() => import('@/components/templates/MedPortfolio'), {
     loading: () => <TemplateSkeleton />,
     ssr: false
   })
@@ -161,7 +161,9 @@ export default function PreviewPage() {
         </header>
 
         <main className="pb-11">
-          <TemplateComponent data={previewData.data} />
+          <div className="max-w-4xl mx-auto overflow-x-hidden">
+            <TemplateComponent data={previewData.data} />
+          </div>
         </main>
 
         <footer className={`fixed bottom-0 left-0 right-0 p-3 transition-colors duration-300 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-[#F5F4ED] border-gray-200'} border-t`}>
