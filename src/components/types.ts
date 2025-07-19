@@ -56,10 +56,10 @@ export interface PortfolioData {
   leadership?: LeadershipItem[];
   certifications?: CertificationItem[];
   contact: ContactInfo;
-  config?: {
-    colors?: Partial<ColorScheme>;
-    particleDensity?: number;
-    template?: string;
+  config: {
+    colors: Partial<ColorScheme>; // Ensure colors is always present, even if partial
+    particleDensity: number;
+    template: string;
   };
 }
 
@@ -71,7 +71,7 @@ export const DEFAULT_COLORS: ColorScheme = {
   highlight: "#3b82f6",
   nebula: "#7c3aed",
   dust: "#facc1560",
-  glow: "#b03aff70"
+  glow: "#b03aff70",
 };
 
 // Default profile data
@@ -83,15 +83,15 @@ export const DEFAULT_PROFILE: PortfolioData = {
   experience: [],
   leadership: [],
   certifications: [],
+  contact: {
+    email: "",
+    github: "",
+    linkedin: "",
+    prc: "",
+  },
   config: {
     colors: { ...DEFAULT_COLORS },
     particleDensity: 50,
     template: "cosmic",
   },
-  contact: {
-    email: "",
-    github: "",
-    linkedin: "",
-    prc: ""
-  }
 };

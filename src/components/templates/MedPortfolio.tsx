@@ -107,17 +107,17 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
             </motion.p>
           </div>
           <div className="text-right">
-            <div className="flex justify-end gap-2 mb-2 mt-17"> {/* Align items to the bottom and lower with the title */}
+            <div className="flex justify-end gap-2 mb-2 mt-17">
               {mergedData.contact.linkedin && (
                 <a href={`https://linkedin.com/in/${mergedData.contact.linkedin}`} target="_blank" rel="noopener noreferrer">
-                  <div className="bg-[#043382] bg-gradient-to-br from-white/40 to-[#043382] text-white w-9 h-9 flex items-center justify-center rounded-lg"> {/* Larger square with gradient and rounded corners */}
+                  <div className="bg-[#043382] bg-gradient-to-br from-white/40 to-[#043382] text-white w-9 h-9 flex items-center justify-center rounded-lg">
                     <FiLinkedin size={20} color="#FFFFFF" />
                   </div>
                 </a>
               )}
               {mergedData.contact.email && (
                 <a href={`mailto:${mergedData.contact.email}`} target="_blank" rel="noopener noreferrer">
-                  <div className="bg-[#043382] text-white w-9 h-9 flex items-center justify-center rounded-full"> {/* Larger circle */}
+                  <div className="bg-[#043382] text-white w-9 h-9 flex items-center justify-center rounded-full">
                     <FiMail size={20} color="#FFFFFF" />
                   </div>
                 </a>
@@ -143,7 +143,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              {/* Left Column: Professional Summary and Certifications */}
+              {/* Left Column: Professional Summary, Certifications, and Leadership */}
               <div>
                 {/* Professional Summary */}
                 <Section title="Professional Summary" icon={<FiUserCheck style={{ color: "#4d4d4f" }} />} accentColor="#4d4d4f">
@@ -165,6 +165,32 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                           </h3>
                           <p className="text-sm" style={{ color: "#4d4d4f" }}>{cert.issuer}</p>
                           <p className="text-sm" style={{ color: "#4d4d4f" }}>{cert.date}</p>
+                        </div>
+                      </ContentItem>
+                    ))}
+                  </Section>
+                )}
+
+                {/* Leadership (only for medPortfolio) */}
+                {mergedData.leadership && mergedData.leadership.length > 0 && (
+                  <Section title="Leadership" icon={<FiAward style={{ color: "#4d4d4f" }} />} accentColor="#4d4d4f">
+                    {mergedData.leadership.map((lead, i) => (
+                      <ContentItem
+                        key={`lead-${i}`}
+                        accentColor="#4d4d4f"
+                      >
+                        <div className="flex flex-col">
+                          <h3 className="text-lg font-medium" style={{ color: "#4d4d4f" }}>
+                            {lead.role} at {lead.organization}
+                          </h3>
+                          <p className="text-sm" style={{ color: "#4d4d4f" }}>{lead.duration}</p>
+                          {lead.highlights && lead.highlights.length > 0 && (
+                            <ul className="list-disc pl-5 mt-2">
+                              {lead.highlights.map((highlight, j) => (
+                                <li key={j} className="text-sm" style={{ color: "#4d4d4f" }}>{highlight}</li>
+                              ))}
+                            </ul>
+                          )}
                         </div>
                       </ContentItem>
                     ))}

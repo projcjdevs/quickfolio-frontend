@@ -1,3 +1,4 @@
+// src/components/PortfolioEditor.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -76,7 +77,13 @@ const TEMPLATES = {
     duration: "",
     highlights: [""],
   },
-  certification: { // Changed from leadership to certification
+  leadership: {
+    role: "",
+    duration: "",
+    organization: "",
+    highlights: [""],
+  },
+  certifications: {
     name: "",
     date: "",
     issuer: "",
@@ -236,11 +243,7 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
       ...prev,
       [field]: [
         ...(prev[field] || []),
-        TEMPLATES[
-          field === "certifications" || field === "leadership"
-            ? "certification"
-            : field
-        ],
+        TEMPLATES[field],
       ],
     }));
   };
@@ -336,7 +339,7 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
             value={portfolioData.title}
             onChange={(e) => updateBasicInfo("title", e.target.value)}
           />
-          {selectedTemplate === "medPortfolio" && ( // Updated to match new key
+          {selectedTemplate === "medPortfolio" && (
             <TextInput
               label="Professional Summary"
               value={portfolioData.summary || ""} 
@@ -468,23 +471,46 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
           ))}
         </EditorSection>
 
-        {/* Certifications Section (replaces Leadership for Medical Minimal) */}
+        {/* Certifications Section (for medPortfolio only) */}
+        {selectedTemplate === "medPortfolio" && (
+          <EditorSection
+            title="Certifications"
+            icon={<FiAward />}
+            onAdd={() => addItem("certifications")}
+          >
+            {portfolioData.certifications?.map((item, i) => (
+              <ItemEditor
+                key={`cert-${i}`}
+                item={item}
+                fields={[
+                  { key: "name", label: "Certification Name" },
+                  { key: "date", label: "Date" },
+                  { key: "issuer", label: "Issuer", optional: true },
+                ]}
+                onUpdate={(key, value) => updateItem("certifications", i, key, value)}
+                onRemove={() => removeItem("certifications", i)}
+              />
+            ))}
+          </EditorSection>
+        )}
+
+        {/* Leadership Section */}
         <EditorSection
-          title={selectedTemplate === "medPortfolio" ? "Certifications" : "Leadership"}
-          icon={selectedTemplate === "medPortfolio" ? <FiAward /> : <FiAward />}
-          onAdd={() => addItem(selectedTemplate === "medPortfolio" ? "certifications" : "leadership")}
+          title="Leadership"
+          icon={<FiAward />}
+          onAdd={() => addItem("leadership")}
         >
-          {(portfolioData[selectedTemplate === "medPortfolio" ? "certifications" : "leadership"] || []).map((item, i) => (
+          {portfolioData.leadership?.map((item, i) => (
             <ItemEditor
-              key={`${selectedTemplate === "medPortfolio" ? "cert" : "lead"}-${i}`}
+              key={`lead-${i}`}
               item={item}
               fields={[
-                { key: "name", label: selectedTemplate === "medPortfolio" ? "Certification Name" : "Role" },
-                { key: "date", label: selectedTemplate === "medPortfolio" ? "Date" : "Duration" },
-                { key: "issuer", label: selectedTemplate === "medPortfolio" ? "Issuer" : "Organization", optional: true },
+                { key: "role", label: "Role" },
+                { key: "duration", label: "Duration" },
+                { key: "organization", label: "Organization", optional: true },
               ]}
-              onUpdate={(key, value) => updateItem(selectedTemplate === "medPortfolio" ? "certifications" : "leadership", i, key, value)}
-              onRemove={() => removeItem(selectedTemplate === "medPortfolio" ? "certifications" : "leadership", i)}
+              onUpdate={(key, value) => updateItem("leadership", i, key, value)}
+              onRemove={() => removeItem("leadership", i)}
             />
           ))}
         </EditorSection>
