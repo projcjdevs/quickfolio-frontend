@@ -178,7 +178,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                     {mergedData.leadership.map((lead, i) => (
                       <ContentItem key={`lead-${i}`} accentColor="#4d4d4f">
                         <div className="flex flex-col">
-                          <h3 className="text-lg font-medium" style={{ color: "#4d4d4f" }}>
+                          <h3 className="text-lg font-medium leading-tight" style={{ color: "#4d4d4f" }}>
                             {lead.role} at {lead.organization}
                           </h3>
                           <p className="text-sm" style={{ color: "#4d4d4f" }}>{lead.duration}</p>
