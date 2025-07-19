@@ -174,7 +174,11 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
         );
       }
       
-      return <TemplateComponent data={portfolioData} />;
+      return (
+        <div className="max-w-full overflow-x-hidden h-full">
+          <TemplateComponent data={portfolioData} />
+        </div>
+      );
     } catch (error) {
       console.error("Error rendering template:", error);
       return (

@@ -78,18 +78,18 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
   }, [mergedData.education, mergedData.experience]);
 
   return (
-    <div className="bg-white flex flex-col min-h-screen font-sans">
+    <div className="bg-white flex flex-col min-h-screen font-sans overflow-x-hidden">
       {/* Header Section */}
       <div className="w-full">
         <motion.div
-          className="text-left py-0 px-6 flex justify-between items-start"
+          className="text-left py-0 px-6 flex justify-between items-start break-words"
           style={{ backgroundColor: COLORS.highlight }}
           initial={{ opacity: 0, y: 20 }}
           animate={controls}
         >
           <div>
             <motion.h1
-              className="text-4xl font-bold tracking-tight mt-7 mb-0 pt-6"
+              className="text-4xl font-bold tracking-tight mt-7 mb-0 pt-6 break-words"
               style={{ color: "#043382" }}
               whileHover={{
                 textShadow: `0 0 4px #04338240`,
@@ -99,7 +99,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
               {mergedData.name || " "}
             </motion.h1>
             <motion.p
-              className="text-lg mb-7"
+              className="text-lg mb-7 break-words"
               style={{ color: "#353535" }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.9 }}
@@ -109,7 +109,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
             </motion.p>
           </div>
           <div className="text-right">
-            <div className="flex justify-end gap-2 mb-2 mt-17">
+            <div className="flex justify-end gap-2 mb-2 mt-17 break-words">
               {mergedData.contact.linkedin && (
                 <a href={`https://linkedin.com/in/${mergedData.contact.linkedin}`} target="_blank" rel="noopener noreferrer">
                   <div className="bg-[#043382] bg-gradient-to-br from-white/40 to-[#043382] text-white w-9 h-9 flex items-center justify-center rounded-lg">
@@ -125,22 +125,22 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                 </a>
               )}
             </div>
-            <span className="text-[13px] font-poppins block mt-1" style={{ color: "#353535" }}>
+            <span className="text-[13px] font-poppins block mt-1 break-words" style={{ color: "#353535" }}>
               {mergedData.contact.prc ? `PRC #${mergedData.contact.prc}` : ""}
             </span>
           </div>
         </motion.div>
 
         {/* Separator Line */}
-        <div className="w-12/13 mx-auto border-t-3 border-solid" style={{ borderColor: "#043382" }} />
+        <div className="w-12/13 mx-auto border-t-3 border-solid break-words" style={{ borderColor: "#043382" }} />
       </div>
 
       {/* Body Content */}
-      <div className="max-w-4xl mx-auto px-6 py-8 flex-1 relative">
+      <div className="max-w-full mx-auto px-6 py-8 flex-1 relative overflow-x-hidden">
         <AnimatePresence>
           {showContent && (
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-[minmax(260px,1fr)_minmax(300px,2.5fr)] gap-8"
+              className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 break-words"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
@@ -150,7 +150,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                 {/* Professional Summary */}
                 <Section title="Professional Summary" icon={<FiUserCheck style={{ color: "#4d4d4f" }} />} accentColor="#4d4d4f">
                   <ContentItem accentColor="#4d4d4f">
-                    <p className="text-sm leading-normal" style={{ color: "#4d4d4f" }}>
+                    <p className="text-sm leading-normal break-words" style={{ color: "#4d4d4f" }}>
                       {mergedData.summary || "Add your professional summary here."}
                     </p>
                   </ContentItem>
@@ -161,12 +161,12 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                   <Section title="Certifications" icon={<FiAward style={{ color: "#4d4d4f" }} />} accentColor="#4d4d4f">
                     {mergedData.certifications.map((cert, i) => (
                       <ContentItem key={`cert-${i}`} accentColor="#4d4d4f">
-                        <div className="flex flex-col">
-                          <h3 className="text-lg font-medium" style={{ color: "#4d4d4f" }}>
+                        <div className="flex flex-col break-words">
+                          <h3 className="text-lg font-medium break-words" style={{ color: "#4d4d4f" }}>
                             {cert.name}
                           </h3>
-                          <p className="text-sm" style={{ color: "#4d4d4f" }}>{cert.issuer}</p>
-                          <p className="text-sm" style={{ color: "#4d4d4f" }}>{cert.date}</p>
+                          <p className="text-sm break-words" style={{ color: "#4d4d4f" }}>{cert.issuer}</p>
+                          <p className="text-sm break-words" style={{ color: "#4d4d4f" }}>{cert.date}</p>
                         </div>
                       </ContentItem>
                     ))}
@@ -178,15 +178,15 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                   <Section title="Leadership" icon={<FiAward style={{ color: "#4d4d4f" }} />} accentColor="#4d4d4f">
                     {mergedData.leadership.map((lead, i) => (
                       <ContentItem key={`lead-${i}`} accentColor="#4d4d4f">
-                        <div className="flex flex-col">
-                          <h3 className="text-lg font-medium leading-tight" style={{ color: "#4d4d4f" }}>
+                        <div className="flex flex-col break-words">
+                          <h3 className="text-lg font-medium leading-tight break-words" style={{ color: "#4d4d4f" }}>
                             {lead.role} at {lead.organization}
                           </h3>
-                          <p className="text-sm" style={{ color: "#4d4d4f" }}>{lead.duration}</p>
+                          <p className="text-sm break-words" style={{ color: "#4d4d4f" }}>{lead.duration}</p>
                           {lead.highlights && lead.highlights.length > 0 && (
-                            <ul className="list-disc pl-5 mt-2">
+                            <ul className="list-disc pl-5 mt-2 break-words">
                               {lead.highlights.map((highlight, j) => (
-                                <li key={j} className="text-sm" style={{ color: "#4d4d4f" }}>{highlight}</li>
+                                <li key={j} className="text-sm break-words" style={{ color: "#4d4d4f" }}>{highlight}</li>
                               ))}
                             </ul>
                           )}
@@ -208,19 +208,19 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                         accentColor="#4d4d4f"
                         ref={el => { educationRefs.current[i] = el; }}
                       >
-                        <div className="flex flex-col">
-                          <h3 className="text-lg font-medium leading-tight" style={{ color: "#4d4d4f" }}>
+                        <div className="flex flex-col break-words">
+                          <h3 className="text-lg font-medium leading-tight break-words" style={{ color: "#4d4d4f" }}>
                             {edu.institution}
                           </h3>
-                          <p className="text-sm font-semibold italic leading-relaxed" style={{ color: "#4d4d4f" }}>{edu.degree}</p>
-                          <p className="text-sm" style={{ color: "#4d4d4f" }}>{edu.details}</p>
+                          <p className="text-sm font-semibold italic leading-relaxed break-words" style={{ color: "#4d4d4f" }}>{edu.degree}</p>
+                          <p className="text-sm break-words" style={{ color: "#4d4d4f" }}>{edu.details}</p>
                         </div>
                       </ContentItem>
                     ))}
                     {mergedData.education.map((_, i) => (
                       <div
                         key={`line-edu-${i}`}
-                        className="absolute w-px bg-[#608abf] z-0"
+                        className="absolute w-px bg-[#608abf] z-0 break-words"
                         style={{
                           left: "0.5rem",
                           top: i === 0 ? '2rem' : `calc(2rem + ${educationHeights.slice(0, i).reduce((sum, h) => sum + h, 0)}px)`,
@@ -228,7 +228,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                         }}
                       >
                         <div
-                          className="absolute top-0 transform -translate-x-1/2 w-3 h-3 bg-[#608abf] rounded-full"
+                          className="absolute top-0 transform -translate-x-1/2 w-3 h-3 bg-[#608abf] rounded-full break-words"
                           style={{ top: '-4px' }}
                         />
                       </div>
@@ -245,14 +245,14 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                         accentColor="#4d4d4f"
                         ref={el => { experienceRefs.current[i] = el; }}
                       >
-                        <div className="flex flex-col">
-                          <h3 className="text-lg font-medium leading-tight" style={{ color: "#4d4d4f" }}>
+                        <div className="flex flex-col break-words">
+                          <h3 className="text-lg font-medium leading-tight break-words" style={{ color: "#4d4d4f" }}>
                             {exp.role} at {exp.company}
                           </h3>
-                          <p className="text-sm" style={{ color: "#4d4d4f" }}>{exp.duration}</p>
-                          <ul className="list-disc pl-5 mt-2">
+                          <p className="text-sm break-words" style={{ color: "#4d4d4f" }}>{exp.duration}</p>
+                          <ul className="list-disc pl-5 mt-2 break-words">
                             {exp.highlights.map((item, j) => (
-                              <li key={j} className="text-sm" style={{ color: "#4d4d4f" }}>{item}</li>
+                              <li key={j} className="text-sm break-words" style={{ color: "#4d4d4f" }}>{item}</li>
                             ))}
                           </ul>
                         </div>
@@ -261,7 +261,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                     {mergedData.experience.map((_, i) => (
                       <div
                         key={`line-exp-${i}`}
-                        className="absolute w-px bg-[#608abf] z-0"
+                        className="absolute w-px bg-[#608abf] z-0 break-words"
                         style={{
                           left: "0.5rem",
                           top: i === 0 ? '2rem' : `calc(2rem + ${experienceHeights.slice(0, i).reduce((sum, h) => sum + h, 0)}px)`,
@@ -269,7 +269,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                         }}
                       >
                         <div
-                          className="absolute top-0 transform -translate-x-1/2 w-3 h-3 bg-[#608abf] rounded-full"
+                          className="absolute top-0 transform -translate-x-1/2 w-3 h-3 bg-[#608abf] rounded-full break-words"
                           style={{ top: '-4px' }}
                         />
                       </div>
@@ -284,7 +284,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
 
       {/* Footer Section */}
       <div className="w-full">
-        <div className="w-12/13 mx-auto border-t-3 border-solid" style={{ borderColor: "#043382" }} />
+        <div className="w-12/13 mx-auto border-t-3 border-solid break-words" style={{ borderColor: "#043382" }} />
         <div style={{ backgroundColor: COLORS.highlight, height: '60px' }} />
       </div>
     </div>
@@ -294,10 +294,10 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
 // Reusable Components
 function Section({ title, icon, children, accentColor, className }: { title: string; icon: React.ReactNode; children: React.ReactNode; accentColor: string; className?: string }) {
   return (
-    <motion.section className={`mb-6 ${className}`} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-      <div className="flex items-center gap-2 mb-3">
+    <motion.section className={`mb-6 ${className} break-words`} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+      <div className="flex items-center gap-2 mb-3 break-words">
         <div style={{ color: accentColor }}>{icon}</div>
-        <h2 className="text-xl font-bold" style={{ color: accentColor }}>
+        <h2 className="text-xl font-bold break-words" style={{ color: accentColor }}>
           {title}
         </h2>
       </div>
@@ -308,8 +308,8 @@ function Section({ title, icon, children, accentColor, className }: { title: str
 
 function ContentItem({ children, icon, accentColor, ref }: { children: React.ReactNode; icon?: React.ReactNode; accentColor: string; ref?: React.Ref<HTMLDivElement> }) {
   return (
-    <motion.div className="mb-4 pl-6" ref={ref} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-      <div className="space-y-1">{children}</div>
+    <motion.div className="mb-4 pl-6 break-words" ref={ref} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+      <div className="space-y-1 break-words">{children}</div>
     </motion.div>
   );
 }
