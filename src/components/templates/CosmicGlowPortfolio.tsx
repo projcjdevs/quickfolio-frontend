@@ -123,47 +123,47 @@ export default function CosmicGlowPortfolio({ data = {} as PortfolioData }) {
 
         {/* Main Content */}
         <div className="w-full max-w-3xl mx-auto px-6 py-12">
-         {/* Name Section */}
+          {/* Name Section */}
           <motion.div className="text-center mb-20" initial={{ opacity: 0, y: 40 }} animate={controls}>
-          <motion.h1 
-            className="text-4xl md:text-5xl font-bold tracking-tight mb-2 relative"
-            style={{ 
-              color: COLORS.text,
-              letterSpacing: '0.05em'
+            <motion.h1 
+              className="text-4xl md:text-5xl font-bold tracking-tight mb-2 relative"
+              style={{ 
+                color: COLORS.text,
+                letterSpacing: '0.05em'
               }}
-            whileHover={{
-              textShadow: `0 0 12px ${COLORS.accent}60`,
-              transition: { duration: 0.3 }
+              whileHover={{
+                textShadow: `0 0 12px ${COLORS.accent}60`,
+                transition: { duration: 0.3 }
               }}
             >
               <span className="relative inline-block">
-              {mergedData.name}
-              {/* Subtle underline accent */}
-            <motion.span 
-              className="absolute bottom-0 left-0 h-[2px] w-full"
-              style={{ backgroundColor: COLORS.accent }}
-              initial={{ scaleX: 0 }}
-              animate={{ 
-                scaleX: 1,
-                transition: { delay: 1.5, duration: 0.8, ease: "easeOut" }
-                }}
-              />
-            </span>
-          </motion.h1>
+                {mergedData.name}
+                {/* Subtle underline accent */}
+                <motion.span 
+                  className="absolute bottom-0 left-0 h-[2px] w-full"
+                  style={{ backgroundColor: COLORS.accent }}
+                  initial={{ scaleX: 0 }}
+                  animate={{ 
+                    scaleX: 1,
+                    transition: { delay: 1.5, duration: 0.8, ease: "easeOut" }
+                  }}
+                />
+              </span>
+            </motion.h1>
   
-        <motion.p
-          className="text-lg md:text-xl tracking-wider mt-4"
-          style={{ 
-            color: COLORS.text,
-            opacity: 0.9
-            }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.9 }}
-          transition={{ delay: 1.8 }}
-          >
-          {mergedData.title}
-        </motion.p>
-      </motion.div>
+            <motion.p
+              className="text-lg md:text-xl tracking-wider mt-4"
+              style={{ 
+                color: COLORS.text,
+                opacity: 0.9
+              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.9 }}
+              transition={{ delay: 1.8 }}
+            >
+              {mergedData.title}
+            </motion.p>
+          </motion.div>
 
           <AnimatePresence>
             {showContent && (
@@ -227,6 +227,42 @@ export default function CosmicGlowPortfolio({ data = {} as PortfolioData }) {
                   </Section>
                 )}
 
+                {/* Leadership Section */}
+                {mergedData.leadership && mergedData.leadership.length > 0 && (
+                  <Section title="LEADERSHIP" icon={<FiAward />} accentColor={COLORS.accent}>
+                    {mergedData.leadership.map((lead, i) => (
+                      <ContentItem key={`lead-${i}`} icon={lead.icon || <FiAward />} accentColor={COLORS.accent}>
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                          <div>
+                            <h3 className="text-xl font-bold" style={{ color: COLORS.text }}>
+                              {lead.role}
+                            </h3>
+                            <p style={{ color: COLORS.accent }}>{lead.organization}</p>
+                          </div>
+                          <p style={{ color: `${COLORS.text}aa` }}>{lead.duration}</p>
+                        </div>
+                        <ul className="space-y-3 pl-6">
+                          {Array.isArray(lead.highlights) && lead.highlights.map((highlight, j) => (
+                            <motion.li 
+                              key={j}
+                              className="relative"
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.1 * j + 0.3 }}
+                            >
+                              <div 
+                                className="absolute left-0 top-2 w-2 h-2 rounded-full"
+                                style={{ backgroundColor: COLORS.highlight }}
+                              />
+                              <p style={{ color: COLORS.text }} className="ml-4">{highlight}</p>
+                            </motion.li>
+                          ))}
+                        </ul>
+                      </ContentItem>
+                    ))}
+                  </Section>
+                )}
+
                 {/* Contact Section */}
                 {(mergedData.contact.email || mergedData.contact.github || mergedData.contact.linkedin) && (
                   <motion.div 
@@ -250,7 +286,7 @@ export default function CosmicGlowPortfolio({ data = {} as PortfolioData }) {
                         <ContactItem 
                           icon={<FiGithub />} 
                           text="GITHUB" 
-                          href={`${mergedData.contact.github}`} 
+                          href={`https://github.com/${mergedData.contact.github}`} 
                           color={COLORS.text}
                           textColor={COLORS.text}
                         />
@@ -259,7 +295,7 @@ export default function CosmicGlowPortfolio({ data = {} as PortfolioData }) {
                         <ContactItem 
                           icon={<FiLinkedin />} 
                           text="LINKEDIN" 
-                          href={`${mergedData.contact.linkedin}`} 
+                          href={`https://linkedin.com/in/${mergedData.contact.linkedin}`} 
                           color={COLORS.text}
                           textColor={COLORS.text}
                         />

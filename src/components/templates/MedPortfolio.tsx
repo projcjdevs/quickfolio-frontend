@@ -34,6 +34,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
         ...(data?.config?.colors || {}),
       },
       particleDensity: data?.config?.particleDensity || DEFAULT_PARTICLE_COUNT,
+      template: data?.config?.template || "medPortfolio",
     },
     summary: data?.summary || "",
   };
@@ -155,8 +156,8 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                   </ContentItem>
                 </Section>
 
-                {/* Certifications */}
-                {mergedData.certifications && mergedData.certifications.length > 0 && (
+                {/* Certifications (only for medPortfolio) */}
+                {mergedData.config?.template === "medPortfolio" && mergedData.certifications && mergedData.certifications.length > 0 && (
                   <Section title="Certifications" icon={<FiAward style={{ color: "#4d4d4f" }} />} accentColor="#4d4d4f">
                     {mergedData.certifications.map((cert, i) => (
                       <ContentItem key={`cert-${i}`} accentColor="#4d4d4f">
@@ -172,7 +173,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                   </Section>
                 )}
 
-                {/* Leadership (only for medPortfolio) */}
+                {/* Leadership (available for all presets) */}
                 {mergedData.leadership && mergedData.leadership.length > 0 && (
                   <Section title="Leadership" icon={<FiAward style={{ color: "#4d4d4f" }} />} accentColor="#4d4d4f">
                     {mergedData.leadership.map((lead, i) => (

@@ -130,8 +130,16 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
     };
   });
 
-  // Handle template loading errors
-  const [templateError, setTemplateError] = useState<string | null>(null);
+  // Sync portfolioData.config.template with selectedTemplate
+  useEffect(() => {
+    setPortfolioData((prev) => ({
+      ...prev,
+      config: {
+        ...prev.config,
+        template: selectedTemplate,
+      },
+    }));
+  }, [selectedTemplate]);
 
   // Auto-save to localStorage
   useEffect(() => {
@@ -148,7 +156,7 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
     } catch (err) {
       console.error("Error saving to localStorage:", err);
     }
-  }, [portfolioData, selectedTemplate]);
+  }, [portfolioData]);
 
   // Render the template with error handling
   const renderTemplate = () => {
@@ -362,11 +370,11 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
               onChange={(e) => updateContact("github", e.target.value)}
             />
           )}
-          <TextInput
-            label="LinkedIn Username"
-            value={portfolioData.contact?.linkedin || ""}
-            onChange={(e) => updateContact("linkedin", e.target.value)}
-          />
+            <TextInput
+              label="LinkedIn Username"
+              value={portfolioData.contact?.linkedin || ""}
+              onChange={(e) => updateContact("linkedin", e.target.value)}
+            />
           {selectedTemplate === "medPortfolio" && (
             <TextInput
               label="PRC License Number"
