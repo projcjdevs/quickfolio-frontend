@@ -1,3 +1,4 @@
+// src/components/templates/MedPortfolio.tsx
 "use client";
 
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
@@ -175,10 +176,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                 {mergedData.leadership && mergedData.leadership.length > 0 && (
                   <Section title="Leadership" icon={<FiAward style={{ color: "#4d4d4f" }} />} accentColor="#4d4d4f">
                     {mergedData.leadership.map((lead, i) => (
-                      <ContentItem
-                        key={`lead-${i}`}
-                        accentColor="#4d4d4f"
-                      >
+                      <ContentItem key={`lead-${i}`} accentColor="#4d4d4f">
                         <div className="flex flex-col">
                           <h3 className="text-lg font-medium" style={{ color: "#4d4d4f" }}>
                             {lead.role} at {lead.organization}

@@ -485,7 +485,7 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
                 fields={[
                   { key: "name", label: "Certification Name" },
                   { key: "date", label: "Date" },
-                  { key: "issuer", label: "Issuer", optional: true },
+                  { key: "issuer", label: "Issuer" },
                 ]}
                 onUpdate={(key, value) => updateItem("certifications", i, key, value)}
                 onRemove={() => removeItem("certifications", i)}
@@ -507,11 +507,64 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
               fields={[
                 { key: "role", label: "Role" },
                 { key: "duration", label: "Duration" },
-                { key: "organization", label: "Organization", optional: true },
+                { key: "organization", label: "Organization" },
               ]}
               onUpdate={(key, value) => updateItem("leadership", i, key, value)}
               onRemove={() => removeItem("leadership", i)}
-            />
+            >
+              <div className="mt-4">
+                <label className="block mb-2 font-medium text-gray-300">
+                  Highlights
+                </label>
+                {item.highlights?.map((highlight, hi) => (
+                  <div
+                    key={`lead-${i}-highlight-${hi}`}
+                    className="flex gap-2 mb-2"
+                  >
+                    <input
+                      type="text"
+                      value={highlight}
+                      onChange={(e) => {
+                        const newHighlights = [...(item.highlights || [])];
+                        newHighlights[hi] = e.target.value;
+                        updateItem(
+                          "leadership",
+                          i,
+                          "highlights",
+                          newHighlights
+                        );
+                      }}
+                      className="flex-1 p-2 bg-gray-700 rounded text-white"
+                    />
+                    <button
+                      onClick={() => {
+                        const newHighlights = (item.highlights ?? []).filter(
+                          (_, hii) => hii !== hi
+                        );
+                        updateItem(
+                          "leadership",
+                          i,
+                          "highlights",
+                          newHighlights
+                        );
+                      }}
+                      className="p-2 text-red-400 hover:text-red-300"
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </div>
+                ))}
+                <button
+                  onClick={() => {
+                    const newHighlights = [...(item.highlights || []), ""];
+                    updateItem("leadership", i, "highlights", newHighlights);
+                  }}
+                  className="flex items-center gap-1 mt-2 text-sm text-yellow-400 hover:text-yellow-300"
+                >
+                  <FiPlus size={14} /> Add Highlight
+                </button>
+              </div>
+            </ItemEditor>
           ))}
         </EditorSection>
 
@@ -660,7 +713,6 @@ function ItemEditor({
           label={field.label}
           value={item[field.key] || ""}
           onChange={(e) => onUpdate(field.key, e.target.value)}
-          disabled={field.optional && !item[field.key]} // Disable if optional and empty
         />
       ))}
       {children}
