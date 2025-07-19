@@ -1,4 +1,3 @@
-// src/components/PortfolioEditor.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -126,7 +125,7 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
     }
     return {
       ...DEFAULT_PROFILE,
-      config: { ...DEFAULT_PROFILE.config, template: initialTemplate } // Set initial template in config
+      config: { ...DEFAULT_PROFILE.config, template: initialTemplate }
     };
   });
 
@@ -203,7 +202,7 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
           templateId: selectedTemplate || portfolioData.config?.template || 'cosmic',
         })
       );
-      console.log("Saving preview-data with templateId:", selectedTemplate || portfolioData.config?.template); // Debug log
+      console.log("Saving preview-data with templateId:", selectedTemplate || portfolioData.config?.template);
       // Open preview in a new tab
       window.open("/preview", "_blank");
     } catch (err) {

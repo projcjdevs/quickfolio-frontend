@@ -57,7 +57,7 @@ export interface PortfolioData {
   certifications?: CertificationItem[];
   contact: ContactInfo;
   config: {
-    colors: Partial<ColorScheme>; // Ensure colors is always present, even if partial
+    colors: Partial<ColorScheme>;
     particleDensity: number;
     template: string;
   };

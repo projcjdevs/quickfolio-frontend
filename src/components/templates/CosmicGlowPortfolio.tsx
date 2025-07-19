@@ -1,4 +1,3 @@
-// src/components/templates/CosmicGlowPortfolio.tsx
 "use client";
 
 import { motion, AnimatePresence, useAnimation } from "framer-motion";

@@ -54,7 +54,7 @@ const PortfolioDisplayBox: React.FC<PortfolioDisplayBoxProps> = ({ id, isActive,
             <button 
             onClick={() => {
             onActivate();
-            setMenuOpen(false); // optional: auto-close after click 
+            setMenuOpen(false);
             }}
             className="block w-full text-left px-4 py-2 hover:bg-gray-100">
               Activate

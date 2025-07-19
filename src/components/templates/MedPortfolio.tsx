@@ -1,4 +1,3 @@
-// src/components/templates/MedPortfolio.tsx
 "use client";
 
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
@@ -9,7 +8,6 @@ import { PortfolioData, DEFAULT_PROFILE } from "../types";
 
 const DEFAULT_PARTICLE_COUNT = 0;
 
-// Medical-themed default colors based on description
 const DEFAULT_MEDICAL_COLORS = {
   bg: "#FFFFFF",
   text: "#000000",
@@ -19,7 +17,7 @@ const DEFAULT_MEDICAL_COLORS = {
   glow: "transparent",
 };
 
-// Main Component
+// main
 export default function MedPortfolio({ data = {} as PortfolioData }) {
   const mergedData = {
     ...DEFAULT_PROFILE,
@@ -61,14 +59,12 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
   }, [controls]);
 
   useEffect(() => {
-    // Update heights for education items
     if (mergedData.education && mergedData.education.length > 0) {
       const newHeights = mergedData.education.map((_, i) => {
         return educationRefs.current[i]?.scrollHeight || 100;
       });
       setEducationHeights(newHeights.map(h => h + 10));
     }
-    // Update heights for experience items
     if (mergedData.experience && mergedData.experience.length > 0) {
       const newHeights = mergedData.experience.map((_, i) => {
         return experienceRefs.current[i]?.scrollHeight || 100;
@@ -79,7 +75,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
 
   return (
     <div className="bg-white flex flex-col min-h-screen font-sans overflow-x-hidden">
-      {/* Header Section */}
+      {/* header */}
       <div className="w-full">
         <motion.div
           className="text-left py-0 px-6 flex justify-between items-start break-words"
@@ -131,11 +127,11 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
           </div>
         </motion.div>
 
-        {/* Separator Line */}
+        {/* line */}
         <div className="w-12/13 mx-auto border-t-3 border-solid break-words" style={{ borderColor: "#043382" }} />
       </div>
 
-      {/* Body Content */}
+      {/* body */}
       <div className="max-w-full mx-auto px-6 py-8 flex-1 relative overflow-x-hidden">
         <AnimatePresence>
           {showContent && (
@@ -145,9 +141,9 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              {/* Left Column: Professional Summary, Certifications, and Leadership */}
+              {/* left column */}
               <div>
-                {/* Professional Summary */}
+                {/* prof summary */}
                 <Section title="Professional Summary" icon={<FiUserCheck style={{ color: "#4d4d4f" }} />} accentColor="#4d4d4f">
                   <ContentItem accentColor="#4d4d4f">
                     <p className="text-sm leading-normal break-words" style={{ color: "#4d4d4f" }}>
@@ -156,7 +152,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                   </ContentItem>
                 </Section>
 
-                {/* Certifications (only for medPortfolio) */}
+                {/* certification - exclusive */}
                 {mergedData.config?.template === "medPortfolio" && mergedData.certifications && mergedData.certifications.length > 0 && (
                   <Section title="Certifications" icon={<FiAward style={{ color: "#4d4d4f" }} />} accentColor="#4d4d4f">
                     {mergedData.certifications.map((cert, i) => (
@@ -173,7 +169,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                   </Section>
                 )}
 
-                {/* Leadership (available for all presets) */}
+                {/* leadership */}
                 {mergedData.leadership && mergedData.leadership.length > 0 && (
                   <Section title="Leadership" icon={<FiAward style={{ color: "#4d4d4f" }} />} accentColor="#4d4d4f">
                     {mergedData.leadership.map((lead, i) => (
@@ -197,9 +193,9 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                 )}
               </div>
 
-              {/* Right Column: Education and Experience */}
+              {/* right column */}
               <div>
-                {/* Education */}
+                {/* education */}
                 {mergedData.education && mergedData.education.length > 0 && (
                   <Section title="Education" icon={<FiBook style={{ color: "#4d4d4f", position: 'relative', zIndex: 1 }} />} accentColor="#4d4d4f" className="relative">
                     {mergedData.education.map((edu, i) => (
@@ -236,7 +232,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
                   </Section>
                 )}
 
-                {/* Experience */}
+                {/* experience */}
                 {mergedData.experience && mergedData.experience.length > 0 && (
                   <Section title="Experience" icon={<FiBriefcase style={{ color: "#4d4d4f", position: 'relative', zIndex: 1 }} />} accentColor="#4d4d4f" className="relative">
                     {mergedData.experience.map((exp, i) => (
@@ -282,7 +278,7 @@ export default function MedPortfolio({ data = {} as PortfolioData }) {
         </AnimatePresence>
       </div>
 
-      {/* Footer Section */}
+      {/* footer */}
       <div className="w-full">
         <div className="w-12/13 mx-auto border-t-3 border-solid break-words" style={{ borderColor: "#043382" }} />
         <div style={{ backgroundColor: COLORS.highlight, height: '60px' }} />

@@ -27,7 +27,7 @@ const TEMPLATE_OPTIONS: Template[] = [
     id: 'medical',
     name: 'Medical Minimal',
     description: 'A minimalist medical-themed design with soft colors and clean layout.',
-    preview: '/images/template-previews/medical-minimal.png' // Update with your Canva preview image path
+    preview: '/images/template-previews/medical-minimal.png'
   },
 ];
 
