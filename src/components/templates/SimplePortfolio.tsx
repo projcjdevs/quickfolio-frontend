@@ -11,6 +11,7 @@ export default function SimplePortfolio({ data = {} as PortfolioData }) {
     ...(data || {}),
     education: data?.education || [],
     experience: data?.experience || [],
+    leadership: data?.leadership || [],
     contact: data?.contact || {}
   };
   
@@ -66,6 +67,36 @@ export default function SimplePortfolio({ data = {} as PortfolioData }) {
                     {exp.highlights && exp.highlights.length > 0 && (
                       <ul className="list-disc pl-5 space-y-1 text-gray-700">
                         {exp.highlights.map((highlight, hi) => (
+                          <li key={hi}>{highlight}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Leadership */}
+          {safeData.leadership && safeData.leadership.length > 0 && (
+            <section>
+              <h2 className="text-2xl font-semibold mb-4 text-gray-800">Leadership</h2>
+              <div className="space-y-8">
+                {safeData.leadership.map((lead, i) => (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                  >
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-bold text-xl">{lead.role}</h3>
+                      <span className="text-gray-600">{lead.duration}</span>
+                    </div>
+                    <p className="font-medium mb-2">{lead.organization}</p>
+                    {lead.highlights && lead.highlights.length > 0 && (
+                      <ul className="list-disc pl-5 space-y-1 text-gray-700">
+                        {lead.highlights.map((highlight, hi) => (
                           <li key={hi}>{highlight}</li>
                         ))}
                       </ul>

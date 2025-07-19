@@ -21,10 +21,18 @@ export interface LeadershipItem {
   icon?: React.ReactNode;
 }
 
+export interface CertificationItem {
+  name: string;
+  date: string;
+  issuer?: string;
+  icon?: React.ReactNode;
+}
+
 export interface ContactInfo {
   email?: string;
   github?: string;
   linkedin?: string;
+  prc?: string;
 }
 
 export interface ColorScheme {
@@ -42,13 +50,16 @@ import React from 'react';
 export interface PortfolioData {
   name: string;
   title: string;
+  summary?: string;
   education?: EducationItem[];
   experience?: ExperienceItem[];
   leadership?: LeadershipItem[];
+  certifications?: CertificationItem[];
   contact: ContactInfo;
-  config?: {
-    colors?: Partial<ColorScheme>;
-    particleDensity?: number;
+  config: {
+    colors: Partial<ColorScheme>;
+    particleDensity: number;
+    template: string;
   };
 }
 
@@ -60,15 +71,27 @@ export const DEFAULT_COLORS: ColorScheme = {
   highlight: "#3b82f6",
   nebula: "#7c3aed",
   dust: "#facc1560",
-  glow: "#b03aff70"
+  glow: "#b03aff70",
 };
 
 // Default profile data
 export const DEFAULT_PROFILE: PortfolioData = {
   name: "Your Name",
   title: "Professional Title",
+  summary: "",
   education: [],
   experience: [],
   leadership: [],
-  contact: {}
+  certifications: [],
+  contact: {
+    email: "",
+    github: "",
+    linkedin: "",
+    prc: "",
+  },
+  config: {
+    colors: { ...DEFAULT_COLORS },
+    particleDensity: 50,
+    template: "cosmic",
+  },
 };
