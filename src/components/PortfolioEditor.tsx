@@ -1,4 +1,3 @@
-// src/components/PortfolioEditor.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -42,7 +41,7 @@ const AVAILABLE_TEMPLATES = {
       loading: () => <TemplatePlaceholder name="Simple Portfolio" />
     })
   },
-  medical: {
+  medPortfolio: {
     name: "Medical Minimal",
     component: dynamic(() => import("@/components/templates/MedPortfolio"), {
       ssr: false,
@@ -108,7 +107,8 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
             contact: { ...DEFAULT_PROFILE.contact, ...(parsed.contact || {}) },
             config: { 
               colors: { ...DEFAULT_COLORS, ...(parsed.config?.colors || {}) },
-              particleDensity: parsed.config?.particleDensity || 50
+              particleDensity: parsed.config?.particleDensity || 50,
+              template: parsed.config?.template || initialTemplate // Load saved template or use initial
             }
           };
         }
@@ -117,7 +117,10 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
         // Fall back to default if JSON parsing fails
       }
     }
-    return DEFAULT_PROFILE;
+    return {
+      ...DEFAULT_PROFILE,
+      config: { ...DEFAULT_PROFILE.config, template: initialTemplate } // Set initial template in config
+    };
   });
 
   // Handle template loading errors
@@ -127,10 +130,18 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
   useEffect(() => {
     try {
       localStorage.setItem('portfolio-data', JSON.stringify(portfolioData));
+      // Sync preview-data with current template
+      localStorage.setItem(
+        'preview-data',
+        JSON.stringify({
+          data: portfolioData,
+          templateId: selectedTemplate || portfolioData.config?.template || 'cosmic',
+        })
+      );
     } catch (err) {
       console.error("Error saving to localStorage:", err);
     }
-  }, [portfolioData]);
+  }, [portfolioData, selectedTemplate]);
 
   // Render the template with error handling
   const renderTemplate = () => {
@@ -165,15 +176,15 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
   // Handler for previewing the portfolio
   const handlePreview = () => {
     try {
-      // Save current data to localStorage before preview
+      // Ensure preview-data is updated with current template
       localStorage.setItem(
-        "preview-data",
+        'preview-data',
         JSON.stringify({
-          data: portfolioData || DEFAULT_PROFILE,
-          templateId: selectedTemplate || "cosmic",
+          data: portfolioData,
+          templateId: selectedTemplate || portfolioData.config?.template || 'cosmic',
         })
       );
-
+      console.log("Saving preview-data with templateId:", selectedTemplate || portfolioData.config?.template); // Debug log
       // Open preview in a new tab
       window.open("/preview", "_blank");
     } catch (err) {
@@ -325,7 +336,7 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
             value={portfolioData.title}
             onChange={(e) => updateBasicInfo("title", e.target.value)}
           />
-          {selectedTemplate === "medical" && (
+          {selectedTemplate === "medPortfolio" && ( // Updated to match new key
             <TextInput
               label="Professional Summary"
               value={portfolioData.summary || ""} 
@@ -341,7 +352,7 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
             value={portfolioData.contact?.email || ""}
             onChange={(e) => updateContact("email", e.target.value)}
           />
-          {selectedTemplate !== "medical" && (
+          {selectedTemplate !== "medPortfolio" && (
             <TextInput
               label="GitHub Username"
               value={portfolioData.contact?.github || ""}
@@ -353,7 +364,7 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
             value={portfolioData.contact?.linkedin || ""}
             onChange={(e) => updateContact("linkedin", e.target.value)}
           />
-          {selectedTemplate === "medical" && (
+          {selectedTemplate === "medPortfolio" && (
             <TextInput
               label="PRC License Number"
               value={portfolioData.contact?.prc || ""}
@@ -459,21 +470,21 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
 
         {/* Certifications Section (replaces Leadership for Medical Minimal) */}
         <EditorSection
-          title={selectedTemplate === "medical" ? "Certifications" : "Leadership"}
-          icon={selectedTemplate === "medical" ? <FiAward /> : <FiAward />}
-          onAdd={() => addItem(selectedTemplate === "medical" ? "certifications" : "leadership")}
+          title={selectedTemplate === "medPortfolio" ? "Certifications" : "Leadership"}
+          icon={selectedTemplate === "medPortfolio" ? <FiAward /> : <FiAward />}
+          onAdd={() => addItem(selectedTemplate === "medPortfolio" ? "certifications" : "leadership")}
         >
-          {(portfolioData[selectedTemplate === "medical" ? "certifications" : "leadership"] || []).map((item, i) => (
+          {(portfolioData[selectedTemplate === "medPortfolio" ? "certifications" : "leadership"] || []).map((item, i) => (
             <ItemEditor
-              key={`${selectedTemplate === "medical" ? "cert" : "lead"}-${i}`}
+              key={`${selectedTemplate === "medPortfolio" ? "cert" : "lead"}-${i}`}
               item={item}
               fields={[
-                { key: "name", label: selectedTemplate === "medical" ? "Certification Name" : "Role" },
-                { key: "date", label: selectedTemplate === "medical" ? "Date" : "Duration" },
-                { key: "issuer", label: selectedTemplate === "medical" ? "Issuer" : "Organization", optional: true },
+                { key: "name", label: selectedTemplate === "medPortfolio" ? "Certification Name" : "Role" },
+                { key: "date", label: selectedTemplate === "medPortfolio" ? "Date" : "Duration" },
+                { key: "issuer", label: selectedTemplate === "medPortfolio" ? "Issuer" : "Organization", optional: true },
               ]}
-              onUpdate={(key, value) => updateItem(selectedTemplate === "medical" ? "certifications" : "leadership", i, key, value)}
-              onRemove={() => removeItem(selectedTemplate === "medical" ? "certifications" : "leadership", i)}
+              onUpdate={(key, value) => updateItem(selectedTemplate === "medPortfolio" ? "certifications" : "leadership", i, key, value)}
+              onRemove={() => removeItem(selectedTemplate === "medPortfolio" ? "certifications" : "leadership", i)}
             />
           ))}
         </EditorSection>

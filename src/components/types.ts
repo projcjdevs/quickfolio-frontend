@@ -59,6 +59,7 @@ export interface PortfolioData {
   config?: {
     colors?: Partial<ColorScheme>;
     particleDensity?: number;
+    template?: string;
   };
 }
 
@@ -82,6 +83,11 @@ export const DEFAULT_PROFILE: PortfolioData = {
   experience: [],
   leadership: [],
   certifications: [],
+  config: {
+    colors: { ...DEFAULT_COLORS },
+    particleDensity: 50,
+    template: "cosmic",
+  },
   contact: {
     email: "",
     github: "",
