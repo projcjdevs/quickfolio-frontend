@@ -19,7 +19,7 @@ const Navbar = () => {
                 </div>
 
                 <div>
-                    <AuthButton />
+                    <AuthButton variant="navbar" />
                 </div>
             </div>
         </header>
