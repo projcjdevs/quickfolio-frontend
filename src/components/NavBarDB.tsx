@@ -18,13 +18,13 @@ const NavBarDB = () => {
     return (
         <>
             <header className="sticky top-0 z-50 bg-[#F5F4ED] border-b border-gray-200">
-                <div className="w-full px-10 py-0 flex justify-between items-center">
+                <div className="w-full px-4 sm:px-6 md:px-10 py-0 flex justify-between items-center">
                     {/* logo, calls AnimatedHeader */}
-                    <div className="text-4xl font-semibold text-[#1d1d1b]">
+                    <div className="text-3xl md:text-4xl font-semibold text-[#1d1d1b]">
                         <AnimatedHeader />
                     </div>
 
-                    {/* desktop nav */}
+                    {/* desktop nav - hidden on mobile */}
                     <div className="hidden md:flex items-center space-x-8 text-[#333] font-normal text-base md:text-[17px] lg:text-[18px]">
                         {links.map((link) => (
                             <a
@@ -45,7 +45,7 @@ const NavBarDB = () => {
                         </button>
                     </div>
 
-                    {/* hamburger (mobile) */}
+                    {/* hamburger (mobile) - only element shown on mobile */}
                     <div className="md:hidden">
                         <button
                             aria-label="Open Hamburger Panel"
@@ -54,19 +54,6 @@ const NavBarDB = () => {
                             <Menu size={24} color="#333" strokeWidth={3.5} />
                         </button>
                     </div>
-                </div>
-
-                {/* mobile nav */}
-                <div className="md:hidden bg-[#F5F4ED] border-t border-gray-200 px-10 pt-4 pb-4 flex flex-col space-y-3">
-                    {links.map((link) => (
-                        <a
-                            key={link.name}
-                            href={link.href}
-                            className="text-[#333] hover:underline text-base font-normal"
-                        >
-                            {link.name}
-                        </a>
-                    ))}
                 </div>
             </header>
 

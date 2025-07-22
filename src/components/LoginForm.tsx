@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // Add router import
 
 interface LoginFormProps {
   onClose: () => void;
@@ -9,10 +10,16 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ onClose, onSwitch }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter(); // Initialize router for redirection
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // For testing: Skip actual API call and redirect to dashboard
+    router.push('/dashboard');
+    
+    // Uncomment this section when you want to restore the original functionality
+    /*
     try {
       const response = await fetch("http://localhost:8080/api/login", {
         method: "POST",
@@ -32,27 +39,30 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose, onSwitch }) => {
     } catch (error) {
       console.error("Error during login:", error);
     }
+    */
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      <div className="bg-white w-[610.99px] h-[427.48px] rounded-[40px] shadow-xl flex overflow-hidden relative">
+      {/* Modal container - Thinner on mobile, original exact size on desktop */}
+      <div className="bg-white w-[70%] sm:w-[80%] md:w-[610.99px] h-auto md:h-[427.48px] rounded-[25px] md:rounded-[40px] shadow-xl flex overflow-hidden relative">
         {/* Close "X" button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-6 text-2xl text-gray-500 hover:text-black focus:outline-none"
+          className="absolute top-3 md:top-4 right-4 md:right-6 text-xl md:text-2xl text-gray-500 hover:text-black focus:outline-none"
           style={{ zIndex: 10 }}
           type="button"
         >
           ×
         </button>
-        {/*left*/}
-        <div className="w-3/5 bg-[#E8F4F4] p-6 flex flex-col justify-start items-start">
+        
+        {/* Left side - Hidden on mobile */}
+        <div className="hidden md:flex md:w-3/5 bg-[#E8F4F4] p-6 flex-col justify-start items-start">
           <h2 className="text-2xl font-bold text-black mb-4 self-start ml-4">
             Quickfolio
           </h2>
@@ -65,12 +75,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose, onSwitch }) => {
           </div>
         </div>
 
-        {/*right*/}
+        {/* Right side - Full width on mobile */}
         <form
           onSubmit={handleLogin}
-          className="w-3/6 p-8 flex flex-col justify-start items-center pt-17"
+          className="w-full md:w-2/5 p-5 md:p-8 flex flex-col justify-start items-center pt-10 md:pt-17"
         >
-          <h2 className="text-2xl font-bold text-black mb-6 text-center">
+          {/* No logo on mobile view now */}
+          
+          <h2 className="text-xl md:text-2xl font-bold text-black mb-6 text-center">
             Login
           </h2>
 
@@ -79,8 +91,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose, onSwitch }) => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Username"
-            className="text-[13px] mb-2 px-4 py-2 rounded-md bg-[#b9b9b9] focus:outline-none focus:ring-2 focus:ring-[#8dd9c4]"
-            style={{ width: "180.19px", height: "30.71px" }}
+            className="text-[13px] mb-3 px-4 py-2 rounded-md bg-[#b9b9b9] focus:outline-none focus:ring-2 focus:ring-[#8dd9c4]"
+            style={{ 
+              width: "100%", 
+              maxWidth: "180px", 
+              height: "30.71px"
+            }}
           />
 
           <input
@@ -90,17 +106,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose, onSwitch }) => {
             placeholder="Password"
             className="text-[13px] mb-4 px-4 py-2 rounded-md bg-[#b9b9b9] focus:outline-none focus:ring-2 focus:ring-[#8dd9c4]"
             style={{
-              width: "180.19px",
+              width: "100%",
+              maxWidth: "180px",
               height: "30.71px",
-              marginBottom: "8px",
+              marginBottom: "12px",
             }}
           />
 
           <p
-            className="text-[10px] mb-3 text-center text-black"
+            className="text-[10px] mb-4 text-center text-black"
             style={{ fontFamily: "arial" }}
           >
-            Don’t have an account?{" "}
+            Don't have an account?{" "}
             <button type="button" onClick={onSwitch} className="text-[#0051F3]">
               Register now
             </button>
@@ -112,19 +129,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose, onSwitch }) => {
             style={{ width: "90px", height: "33px" }}
           >
             Login
-          </button>
-
-          <div className="w-full flex items-center my-4">
-            <hr className="flex-grow border-gray-300" />
-            <span className="mx-2 text-gray-400 text-sm">OR</span>
-            <hr className="flex-grow border-gray-300" />
-          </div>
-
-          <button
-            type="button"
-            className="w-[175px] h-[30px] flex items-center justify-center border border-[#1e1e1e] text-[#1e1e1e] text-[12px] font-medium py-2 rounded-md mb-2 hover:bg-gray-100 transition"
-          >
-            Continue with Google
           </button>
         </form>
       </div>

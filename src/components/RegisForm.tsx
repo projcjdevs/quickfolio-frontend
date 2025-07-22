@@ -80,25 +80,26 @@ export default function RegistrationModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      <div className="bg-white w-[610.99px] h-[427.48px] rounded-[40px] shadow-xl flex overflow-hidden relative">
+      {/* Modal container - Thinner on mobile, original exact size on desktop */}
+      <div className="bg-white w-[70%] sm:w-[80%] md:w-[610.99px] h-auto md:h-[427.48px] rounded-[25px] md:rounded-[40px] shadow-xl flex overflow-hidden relative">
         {/* Close "X" button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-6 text-2xl text-gray-500 hover:text-black focus:outline-none"
+          className="absolute top-3 md:top-4 right-4 md:right-6 text-xl md:text-2xl text-gray-500 hover:text-black focus:outline-none"
           style={{ zIndex: 10 }}
           type="button"
         >
           ×
         </button>
 
-        {/*left*/}
-        <div className="w-3/5 bg-[#E8F4F4] p-6 flex flex-col justify-start items-start">
+        {/* Left side - Hidden on mobile */}
+        <div className="hidden md:flex md:w-3/5 bg-[#E8F4F4] p-6 flex-col justify-start items-start">
           <h2 className="text-2xl font-bold text-black mb-4 self-start ml-4">
             Quickfolio
           </h2>
@@ -111,12 +112,12 @@ export default function RegistrationModal({
           </div>
         </div>
 
-        {/*right*/}
+        {/* Right side - Full width on mobile */}
         <form
           onSubmit={handleSubmit}
-          className="w-3/6 p-8 flex flex-col justify-start items-center pt-17"
+          className="w-full md:w-2/5 p-5 md:p-8 flex flex-col justify-start items-center pt-8 md:pt-17"
         >
-          <h2 className="text-2xl font-bold text-black mb-6 text-center">
+          <h2 className="text-xl md:text-2xl font-bold text-black mb-4 md:mb-6 text-center">
             Register
           </h2>
 
@@ -130,10 +131,14 @@ export default function RegistrationModal({
             className={`text-[13px] mb-2 px-4 py-2 rounded-md bg-[#b9b9b9] focus:outline-none focus:ring-2 focus:ring-[#8dd9c4] ${
               errors.yourName ? "ring-2 ring-[#ff5678]" : ""
             }`}
-            style={{ width: "180.19px", height: "30.71px" }}
+            style={{ 
+              width: "100%", 
+              maxWidth: "180px", 
+              height: "30.71px" 
+            }}
           />
           {errors.yourName && (
-            <p className="text-[#ff5678] text-[8px] -mt-1 mb-1">
+            <p className="text-[#ff5678] text-[8px] -mt-1 mb-1 w-full max-w-[180px] text-left">
               {errors.yourName}
             </p>
           )}
@@ -148,10 +153,14 @@ export default function RegistrationModal({
             className={`text-[13px] mb-2 px-4 py-2 rounded-md bg-[#b9b9b9] focus:outline-none focus:ring-2 focus:ring-[#8dd9c4] ${
               errors.email ? "ring-2 ring-[#ff5678]" : ""
             }`}
-            style={{ width: "180.19px", height: "30.71px" }}
+            style={{ 
+              width: "100%", 
+              maxWidth: "180px", 
+              height: "30.71px" 
+            }}
           />
           {errors.email && (
-            <p className="text-[#ff5678] text-[8px] -mt-1 mb-1">
+            <p className="text-[#ff5678] text-[8px] -mt-1 mb-1 w-full max-w-[180px] text-left">
               {errors.email}
             </p>
           )}
@@ -166,10 +175,14 @@ export default function RegistrationModal({
             className={`text-[13px] mb-2 px-4 py-2 rounded-md bg-[#b9b9b9] focus:outline-none focus:ring-2 focus:ring-[#8dd9c4] ${
               errors.password ? "ring-2 ring-[#ff5678]" : ""
             }`}
-            style={{ width: "180.19px", height: "30.71px" }}
+            style={{ 
+              width: "100%", 
+              maxWidth: "180px", 
+              height: "30.71px" 
+            }}
           />
           {errors.password && (
-            <p className="text-[#ff5678] text-[8px] -mt-1 mb-1">
+            <p className="text-[#ff5678] text-[8px] -mt-1 mb-1 w-full max-w-[180px] text-left">
               {errors.password}
             </p>
           )}
@@ -184,10 +197,14 @@ export default function RegistrationModal({
             className={`text-[13px] mb-2 px-4 py-2 rounded-md bg-[#b9b9b9] focus:outline-none focus:ring-2 focus:ring-[#8dd9c4] ${
               errors.confirmPassword ? "ring-2 ring-[#ff5678]" : ""
             }`}
-            style={{ width: "180.19px", height: "30.71px" }}
+            style={{ 
+              width: "100%", 
+              maxWidth: "180px", 
+              height: "30.71px" 
+            }}
           />
           {errors.confirmPassword && (
-            <p className="text-[#ff5678] text-[8px] -mt-1 mb-1">
+            <p className="text-[#ff5678] text-[8px] -mt-1 mb-1 w-full max-w-[180px] text-left">
               {errors.confirmPassword}
             </p>
           )}
@@ -208,19 +225,6 @@ export default function RegistrationModal({
             style={{ width: "90px", height: "33px" }}
           >
             Register
-          </button>
-
-          <div className="w-full flex items-center mt-2 mb-2">
-            <hr className="flex-grow border-gray-300" />
-            <span className="mx-2 text-gray-400 text-sm">OR</span>
-            <hr className="flex-grow border-gray-300" />
-          </div>
-
-          <button
-            type="button"
-            className="w-[175px] h-[30px] flex items-center justify-center border border-[#1e1e1e] text-[#1e1e1e] text-[12px] font-medium py-2 rounded-md hover:bg-gray-100 transition"
-          >
-            Continue with Google
           </button>
         </form>
       </div>
