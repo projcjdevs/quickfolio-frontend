@@ -5,7 +5,7 @@ import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import { useState } from "react";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/NavBarLP";
-
+import AuthButton from "@/components/AuthButton";
 import { motion } from "framer-motion";
 
 const App: React.FC = () => {
@@ -76,10 +76,9 @@ const App: React.FC = () => {
   // Step cards data with proper Motion
   const stepCards = [
     {
-      title: "Step 1\nCreate",
+      title: "Create",
       description: "Pick a template and add your content—fast and easy.",
       image: "/images/landing-page/laying.png",
-      position: "absolute -top-48 -right-6 z-10",
       motionProps: {
         animate: {
           y: [0, -6, 0],
@@ -93,11 +92,10 @@ const App: React.FC = () => {
       },
     },
     {
-      title: "Step 2\nCustomize",
+      title: "Customize",
       description:
         "Edit colors, fonts, and layout to fit your brand perfectly.",
       image: "/images/landing-page/reading.png",
-      position: "absolute -bottom-28 z-10",
       motionProps: {
         animate: {
           y: [0, -7, 0],
@@ -111,10 +109,9 @@ const App: React.FC = () => {
       },
     },
     {
-      title: "Step 3\nPublish",
+      title: "Publish",
       description: "Launch your website live in seconds—no code needed.",
       image: "/images/landing-page/swinging.png",
-      position: "absolute -top-25 -right-18 z-10",
       motionProps: {
         animate: {
           y: [0, -3, 0],
@@ -129,11 +126,11 @@ const App: React.FC = () => {
     },
   ];
 
-  // Floating boxes with proper Motion
+  // Floating boxes with proper Motion - hidden on mobile
   const floatingBoxes = [
     {
       className:
-        "absolute top-68 right-18 w-48 h-24 bg-white rounded-xl shadow-md z-20",
+        "hidden lg:block absolute top-68 right-18 w-48 h-24 bg-white rounded-xl shadow-md z-20",
       motionProps: {
         animate: { y: [0, -9, 0] },
         transition: {
@@ -145,7 +142,7 @@ const App: React.FC = () => {
     },
     {
       className:
-        "absolute top-10 -right-1 w-36 h-16 bg-white rounded-xl shadow-md z-20",
+        "hidden lg:block absolute top-10 -right-1 w-36 h-16 bg-white rounded-xl shadow-md z-20",
       motionProps: {
         animate: { y: [0, -7, 0] },
         transition: {
@@ -157,7 +154,7 @@ const App: React.FC = () => {
     },
     {
       className:
-        "absolute top-30 right-110 w-44 h-22 bg-white rounded-xl shadow-md z-20",
+        "hidden lg:block absolute top-30 right-110 w-44 h-22 bg-white rounded-xl shadow-md z-20",
       motionProps: {
         animate: { y: [0, -11, 0] },
         transition: {
@@ -171,78 +168,86 @@ const App: React.FC = () => {
 
   return (
     <div className="bg-[#2D3748] min-h-screen flex flex-col">
-      <div className="flex-1 font-sans bg-white text-gray-800 border-[70px] border-[#2D3748] m-4">
+      <div className="flex-1 font-sans bg-white text-gray-800 lg:border-[70px] border-[#2D3748] lg:m-4">
         {/* Navigation */}
-
         <Navbar />
 
-        {/* Top Intro Text & Image */}
-        <main className="px-6 py-10 bg-[#F5F4ED]">
-          <section className="py-15 px-35">
-            <div className="grid gap-15 md:grid-cols-2">
-              <div>
-                <h1 className="text-7xl text-black font-bold"> One Page, </h1>
-                <h1 className="text-7xl text-black font-bold"> Infinite </h1>
-                <h1 className="text-7xl text-black font-bold"> Potential. </h1>
-                <p className="text-2xl text-black max-w-sm">
-                  Whether you're applying, networking, or just vibing — make
-                  sure your link feels like you.
-                </p>
-
-                {/* CTA Button removed */}
-              </div>
-
-              <div className="relative">
-                {/* Main character (now behind the boxes) */}
-                <motion.img
-                  src="/images/landing-page/float.png"
-                  alt="main pic"
-                  className="w-100 h-100 outline-none ring-0 focus:outline-none focus:ring-0 relative z-0"
-                  animate={{
-                    y: [0, -4, 0],
-                    rotate: [0, -3, 3, 0],
-                  }}
-                  transition={{
-                    duration: 7,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    repeatType: "reverse",
-                  }}
-                />
-
-                {/* Floating boxes */}
-                {floatingBoxes.map((box, index) => (
-                  <motion.div
-                    key={index}
-                    className={box.className}
-                    {...box.motionProps}
-                  />
-                ))}
+        {/* Top Intro Text */}
+        <main className="px-4 lg:px-6 py-10 bg-[#F5F4ED]">
+          <section className="py-8 lg:py-15 px-4 lg:px-35">
+            <div className="text-left">
+              <h1 className="text-4xl md:text-5xl lg:text-7xl text-black font-bold">
+                One Page,
+              </h1>
+              <h1 className="text-4xl md:text-5xl lg:text-7xl text-black font-bold">
+                Infinite
+              </h1>
+              <h1 className="text-4xl md:text-5xl lg:text-7xl text-black font-bold mb-6">
+                Potential.
+              </h1>
+              <p className="text-lg md:text-xl lg:text-2xl text-black max-w-lg mb-6">
+                Whether you're applying, networking, or just vibing — make sure
+                your link feels like you.
+              </p>
+              
+              {/* Mobile CTA - only visible on mobile */}
+              <div className="flex justify-center md:hidden mt-8">
+                <AuthButton variant="body" className="w-full sm:w-auto" />
               </div>
             </div>
           </section>
 
+          {/* Floating Image Section */}
+          <section className="hidden lg:block relative w-full h-[300px] sm:h-[400px] md:h-[500px] my-12 md:my-16">
+            <motion.img
+              src="/images/landing-page/float.png"
+              alt="main pic"
+              className="w-full h-full object-contain mx-auto px-4"
+              animate={{
+                y: [0, -4, 0],
+                rotate: [0, -3, 3, 0],
+              }}
+              transition={{
+                duration: 7,
+                repeat: Infinity,
+                ease: "easeInOut",
+                repeatType: "reverse",
+              }}
+            />
+
+            {/* Floating boxes - hidden on mobile */}
+            {floatingBoxes.map((box, index) => (
+              <motion.div
+                key={index}
+                className={box.className}
+                {...box.motionProps}
+              />
+            ))}
+          </section>
+
           {/* Steps section */}
-          <section className="px-40 py-20">
-            <div className="grid gap-16 md:grid-cols-3">
+          <section className="px-4 lg:px-40 py-10 lg:py-20">
+            <div className="grid gap-8 md:gap-16 md:grid-cols-3">
               {stepCards.map((card, index) => (
                 <div
                   key={index}
                   className="relative flex flex-col items-center"
                 >
-                  <div className={card.position}>
-                    <motion.img
-                      src={card.image}
-                      alt={card.title.split("\n")[1].toLowerCase()}
-                      className="w-80 h-80 object-contain"
-                      {...card.motionProps}
-                    />
-                  </div>
-                  <div className="bg-white shadow-md px-6 pt-24 pb-8 w-full text-center border-gray-200 min-h-[350px]">
-                    <h2 className="text-xl font-bold mb-2 whitespace-pre-line">
+                  <div className="bg-white shadow-md px-6 pb-8 w-full text-center border border-gray-200 rounded-lg overflow-hidden relative min-h-[400px] lg:min-h-[450px]">
+                    {/* Doodle image inside the card - made larger */}
+                    <div className="h-48 md:h-56 lg:h-64 flex items-center justify-center -mt-2 mb-6 relative">
+                      <motion.img
+                        src={card.image}
+                        alt={card.title}
+                        className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 object-contain"
+                        {...card.motionProps}
+                      />
+                    </div>
+
+                    <h2 className="text-xl lg:text-2xl font-bold mb-4 whitespace-pre-line">
                       {card.title}
                     </h2>
-                    <p className="text-gray-600 text-sm leading-relaxed">
+                    <p className="text-gray-600 text-base leading-relaxed">
                       {card.description}
                     </p>
                   </div>
@@ -252,21 +257,21 @@ const App: React.FC = () => {
           </section>
 
           {/* Feature cards */}
-          <div className="grid gap-8 md:grid-cols-3 bg-white border border-gray-200 rounded-xl shadow-sm w-full max-w-5xl mx-auto p-8 my-16">
+          <div className="grid gap-6 md:gap-8 md:grid-cols-3 bg-white border border-gray-200 rounded-xl shadow-sm w-full max-w-5xl mx-auto p-6 lg:p-8 my-8 lg:my-16">
             {featureCards.map((card, index) => (
               <a
                 key={index}
                 href="#"
-                className="group relative p-6 rounded-lg hover:bg-gray-50 transition-all duration-300"
+                className="group relative p-4 lg:p-6 rounded-lg hover:bg-gray-50 transition-all duration-300"
               >
                 <div className="flex flex-col items-center">
                   <div className="mb-4 p-3 rounded-full bg-gray-100 group-hover:bg-gray-200 transition-colors duration-300">
                     {card.icon}
                   </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2 group-hover:scale-[1.02] transition-transform duration-300">
+                  <h3 className="text-lg lg:text-xl font-medium text-gray-900 mb-2 group-hover:scale-[1.02] transition-transform duration-300">
                     {card.title}
                   </h3>
-                  <p className="text-sm text-gray-600 text-center max-w-xs leading-relaxed group-hover:translate-y-0.5 transition-transform duration-300">
+                  <p className="text-base text-gray-600 text-center max-w-xs leading-relaxed group-hover:translate-y-0.5 transition-transform duration-300">
                     {card.description}
                   </p>
                   <div className="absolute bottom-0 left-1/2 h-[2px] w-0 bg-gray-800 transform -translate-x-1/2 group-hover:w-[calc(100%-3rem)] transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]" />

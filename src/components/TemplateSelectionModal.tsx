@@ -81,7 +81,7 @@ export default function TemplateSelectionModal({ isOpen, onClose, onSelect }: Te
                     </div>
                   ))}
                 </div>
-              </div>
+              </div>  
               
               {/* Preview Area - INCREASED SIZE */}
               <div className="flex-1 p-8 flex flex-col">
