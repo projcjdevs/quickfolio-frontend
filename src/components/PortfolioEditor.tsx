@@ -1,4 +1,3 @@
-// src/components/PortfolioEditor.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -36,10 +35,17 @@ const AVAILABLE_TEMPLATES = {
     })
   },
   simple: {
-    name: "Simple Portfolio", 
+    name: "Simple Portfolio",
     component: dynamic(() => import("@/components/templates/SimplePortfolio"), {
       ssr: false,
       loading: () => <TemplatePlaceholder name="Simple Portfolio" />
+    })
+  },
+  medPortfolio: {
+    name: "Medical Minimal",
+    component: dynamic(() => import("@/components/templates/MedPortfolio"), {
+      ssr: false,
+      loading: () => <TemplatePlaceholder name="Medical Minimal" />
     })
   },
 };
@@ -72,9 +78,14 @@ const TEMPLATES = {
   },
   leadership: {
     role: "",
-    organization: "",
     duration: "",
+    organization: "",
     highlights: [""],
+  },
+  certifications: {
+    name: "",
+    date: "",
+    issuer: "",
   },
 };
 
@@ -102,7 +113,8 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
             contact: { ...DEFAULT_PROFILE.contact, ...(parsed.contact || {}) },
             config: { 
               colors: { ...DEFAULT_COLORS, ...(parsed.config?.colors || {}) },
-              particleDensity: parsed.config?.particleDensity || 50
+              particleDensity: parsed.config?.particleDensity || 50,
+              template: parsed.config?.template || initialTemplate // Load saved template or use initial
             }
           };
         }
@@ -111,16 +123,35 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
         // Fall back to default if JSON parsing fails
       }
     }
-    return DEFAULT_PROFILE;
+    return {
+      ...DEFAULT_PROFILE,
+      config: { ...DEFAULT_PROFILE.config, template: initialTemplate }
+    };
   });
 
-  // Handle template loading errors
-  const [templateError, setTemplateError] = useState<string | null>(null);
+  // Sync portfolioData.config.template with selectedTemplate
+  useEffect(() => {
+    setPortfolioData((prev) => ({
+      ...prev,
+      config: {
+        ...prev.config,
+        template: selectedTemplate,
+      },
+    }));
+  }, [selectedTemplate]);
 
   // Auto-save to localStorage
   useEffect(() => {
     try {
       localStorage.setItem('portfolio-data', JSON.stringify(portfolioData));
+      // Sync preview-data with current template
+      localStorage.setItem(
+        'preview-data',
+        JSON.stringify({
+          data: portfolioData,
+          templateId: selectedTemplate || portfolioData.config?.template || 'cosmic',
+        })
+      );
     } catch (err) {
       console.error("Error saving to localStorage:", err);
     }
@@ -142,7 +173,11 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
         );
       }
       
-      return <TemplateComponent data={portfolioData} />;
+      return (
+        <div className="max-w-full overflow-x-hidden h-full">
+          <TemplateComponent data={portfolioData} />
+        </div>
+      );
     } catch (error) {
       console.error("Error rendering template:", error);
       return (
@@ -159,15 +194,15 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
   // Handler for previewing the portfolio
   const handlePreview = () => {
     try {
-      // Save current data to localStorage before preview
+      // Ensure preview-data is updated with current template
       localStorage.setItem(
-        "preview-data",
+        'preview-data',
         JSON.stringify({
-          data: portfolioData || DEFAULT_PROFILE,
-          templateId: selectedTemplate || "cosmic",
+          data: portfolioData,
+          templateId: selectedTemplate || portfolioData.config?.template || 'cosmic',
         })
       );
-
+      console.log("Saving preview-data with templateId:", selectedTemplate || portfolioData.config?.template);
       // Open preview in a new tab
       window.open("/preview", "_blank");
     } catch (err) {
@@ -214,15 +249,18 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
     }));
   };
 
-  const addItem = (field: "education" | "experience" | "leadership") => {
+  const addItem = (field: "education" | "experience" | "certifications" | "leadership") => {
     setPortfolioData((prev) => ({
       ...prev,
-      [field]: [...(prev[field] || []), TEMPLATES[field]],
+      [field]: [
+        ...(prev[field] || []),
+        TEMPLATES[field],
+      ],
     }));
   };
 
   const updateItem = (
-    field: "education" | "experience" | "leadership",
+    field: "education" | "experience" | "certifications" | "leadership",
     index: number,
     key: string,
     value: any
@@ -235,7 +273,7 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
   };
 
   const removeItem = (
-    field: "education" | "experience" | "leadership",
+    field: "education" | "experience" | "certifications" | "leadership",
     index: number
   ) => {
     setPortfolioData((prev) => ({
@@ -312,6 +350,13 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
             value={portfolioData.title}
             onChange={(e) => updateBasicInfo("title", e.target.value)}
           />
+          {selectedTemplate === "medPortfolio" && (
+            <TextInput
+              label="Professional Summary"
+              value={portfolioData.summary || ""} 
+              onChange={(e) => updateBasicInfo("summary", e.target.value)}
+            />
+          )}
         </EditorSection>
 
         {/* Contact Info Section */}
@@ -321,16 +366,25 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
             value={portfolioData.contact?.email || ""}
             onChange={(e) => updateContact("email", e.target.value)}
           />
-          <TextInput
-            label="GitHub Username"
-            value={portfolioData.contact?.github || ""}
-            onChange={(e) => updateContact("github", e.target.value)}
-          />
-          <TextInput
-            label="LinkedIn Username"
-            value={portfolioData.contact?.linkedin || ""}
-            onChange={(e) => updateContact("linkedin", e.target.value)}
-          />
+          {selectedTemplate !== "medPortfolio" && (
+            <TextInput
+              label="GitHub Username"
+              value={portfolioData.contact?.github || ""}
+              onChange={(e) => updateContact("github", e.target.value)}
+            />
+          )}
+            <TextInput
+              label="LinkedIn Username"
+              value={portfolioData.contact?.linkedin || ""}
+              onChange={(e) => updateContact("linkedin", e.target.value)}
+            />
+          {selectedTemplate === "medPortfolio" && (
+            <TextInput
+              label="PRC License Number"
+              value={portfolioData.contact?.prc || ""}
+              onChange={(e) => updateContact("prc", e.target.value)}
+            />
+          )}
         </EditorSection>
 
         {/* Education Section */}
@@ -369,7 +423,7 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
                 { key: "company", label: "Company" },
                 { key: "duration", label: "Duration" },
               ]}
-              onUpdate={(key, value) => updateItem("experience", i, key, value)}
+              onUpdate={(key: string, value: any) => updateItem("experience", i, key, value)}
               onRemove={() => removeItem("experience", i)}
             >
               <div className="mt-4">
@@ -428,28 +482,104 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
           ))}
         </EditorSection>
 
+        {/* Certifications Section (for medPortfolio only) */}
+        {selectedTemplate === "medPortfolio" && (
+          <EditorSection
+            title="Certifications"
+            icon={<FiAward />}
+            onAdd={() => addItem("certifications")}
+          >
+            {portfolioData.certifications?.map((item, i) => (
+              <ItemEditor
+                key={`cert-${i}`}
+                item={item}
+                fields={[
+                  { key: "name", label: "Certification Name" },
+                  { key: "date", label: "Date" },
+                  { key: "issuer", label: "Issuer" },
+                ]}
+                onUpdate={(key, value) => updateItem("certifications", i, key, value)}
+                onRemove={() => removeItem("certifications", i)}
+              />
+            ))}
+          </EditorSection>
+        )}
+
         {/* Leadership Section */}
         <EditorSection
           title="Leadership"
           icon={<FiAward />}
           onAdd={() => addItem("leadership")}
         >
-          {portfolioData.leadership?.map((lead, i) => (
+          {portfolioData.leadership?.map((item, i) => (
             <ItemEditor
               key={`lead-${i}`}
-              item={lead}
+              item={item}
               fields={[
                 { key: "role", label: "Role" },
-                { key: "organization", label: "Organization" },
                 { key: "duration", label: "Duration" },
+                { key: "organization", label: "Organization" },
               ]}
               onUpdate={(key, value) => updateItem("leadership", i, key, value)}
               onRemove={() => removeItem("leadership", i)}
-            />
+            >
+              <div className="mt-4">
+                <label className="block mb-2 font-medium text-gray-300">
+                  Highlights
+                </label>
+                {item.highlights?.map((highlight, hi) => (
+                  <div
+                    key={`lead-${i}-highlight-${hi}`}
+                    className="flex gap-2 mb-2"
+                  >
+                    <input
+                      type="text"
+                      value={highlight}
+                      onChange={(e) => {
+                        const newHighlights = [...(item.highlights || [])];
+                        newHighlights[hi] = e.target.value;
+                        updateItem(
+                          "leadership",
+                          i,
+                          "highlights",
+                          newHighlights
+                        );
+                      }}
+                      className="flex-1 p-2 bg-gray-700 rounded text-white"
+                    />
+                    <button
+                      onClick={() => {
+                        const newHighlights = (item.highlights ?? []).filter(
+                          (_, hii) => hii !== hi
+                        );
+                        updateItem(
+                          "leadership",
+                          i,
+                          "highlights",
+                          newHighlights
+                        );
+                      }}
+                      className="p-2 text-red-400 hover:text-red-300"
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </div>
+                ))}
+                <button
+                  onClick={() => {
+                    const newHighlights = [...(item.highlights || []), ""];
+                    updateItem("leadership", i, "highlights", newHighlights);
+                  }}
+                  className="flex items-center gap-1 mt-2 text-sm text-yellow-400 hover:text-yellow-300"
+                >
+                  <FiPlus size={14} /> Add Highlight
+                </button>
+              </div>
+            </ItemEditor>
           ))}
         </EditorSection>
 
-        {/* Color Customization
+        {/* Color Customization */}
         <EditorSection title="Color Scheme">
           {Object.entries(DEFAULT_COLORS).map(([key]) => (
             <div key={key} className="mb-4">
@@ -482,8 +612,8 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
               </div>
             </div>
           ))}
-        </EditorSection> */}
-      {/* Dipasureditosikit*/}
+        </EditorSection>
+
         {/* Actions */}
         <div className="flex gap-4 mt-8">
           <button
@@ -542,18 +672,23 @@ function TextInput({
   label,
   value,
   onChange,
+  disabled = false,
+  className = "",
 }: {
   label: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
+  className?: string;
 }) {
   return (
-    <div className="mb-4">
+    <div className={`mb-4 ${className}`}>
       <label className="block mb-1 font-medium text-gray-300">{label}</label>
       <input
         type="text"
         value={value}
         onChange={onChange}
+        disabled={disabled}
         className="w-full p-2 bg-gray-700 rounded text-white"
       />
     </div>
@@ -568,7 +703,7 @@ function ItemEditor({
   onRemove,
 }: {
   item: any;
-  fields: { key: string; label: string }[];
+  fields: { key: string; label: string; optional?: boolean }[];
   children?: React.ReactNode;
   onUpdate: (key: string, value: any) => void;
   onRemove: () => void;
