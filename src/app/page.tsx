@@ -126,11 +126,11 @@ const App: React.FC = () => {
     },
   ];
 
-  // Floating boxes with proper Motion - hidden on mobile
+  // Updated floating boxes - positioned closer to the image without excessive overlap
   const floatingBoxes = [
     {
       className:
-        "hidden lg:block absolute top-68 right-18 w-48 h-24 bg-white rounded-xl shadow-md z-20",
+        "hidden xl:block absolute top-60 left-2 w-36 h-20 bg-white rounded-xl shadow-lg z-20",
       motionProps: {
         animate: { y: [0, -9, 0] },
         transition: {
@@ -142,7 +142,7 @@ const App: React.FC = () => {
     },
     {
       className:
-        "hidden lg:block absolute top-10 -right-1 w-36 h-16 bg-white rounded-xl shadow-md z-20",
+        "hidden xl:block absolute top-16 right-3 w-48 h-24 bg-white rounded-xl shadow-lg z-20",
       motionProps: {
         animate: { y: [0, -7, 0] },
         transition: {
@@ -154,7 +154,7 @@ const App: React.FC = () => {
     },
     {
       className:
-        "hidden lg:block absolute top-30 right-110 w-44 h-22 bg-white rounded-xl shadow-md z-20",
+        "hidden xl:block absolute bottom-24 right-20 w-40 h-24 bg-white rounded-xl shadow-lg z-20",
       motionProps: {
         animate: { y: [0, -11, 0] },
         transition: {
@@ -172,79 +172,90 @@ const App: React.FC = () => {
         {/* Navigation */}
         <Navbar />
 
-        {/* Top Intro Text */}
+        {/* Hero Section with Text and Floating Image */}
         <main className="px-4 lg:px-6 py-10 bg-[#F5F4ED]">
           <section className="py-8 lg:py-15 px-4 lg:px-35">
-            <div className="text-left">
-              <h1 className="text-4xl md:text-5xl lg:text-7xl text-black font-bold">
-                One Page,
-              </h1>
-              <h1 className="text-4xl md:text-5xl lg:text-7xl text-black font-bold">
-                Infinite
-              </h1>
-              <h1 className="text-4xl md:text-5xl lg:text-7xl text-black font-bold mb-6">
-                Potential.
-              </h1>
-              <p className="text-lg md:text-xl lg:text-2xl text-black max-w-lg mb-6">
-                Whether you're applying, networking, or just vibing — make sure
-                your link feels like you.
-              </p>
-              
-              {/* Mobile CTA - only visible on mobile */}
-              <div className="flex justify-center md:hidden mt-8">
-                <AuthButton variant="body" className="w-full sm:w-auto" />
+            <div className="grid lg:grid-cols-2 gap-8 items-center">
+              {/* Left side - Hero text */}
+              <div className="text-left">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-black font-bold">
+                  One Page,
+                </h1>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-black font-bold">
+                  Infinite
+                </h1>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-black font-bold mb-6">
+                  Potential.
+                </h1>
+                <p className="text-lg md:text-xl lg:text-xl xl:text-2xl text-black max-w-lg mb-6">
+                  Whether you're applying, networking, or just vibing — make sure
+                  your link feels like you.
+                </p>
+                
+                {/* Mobile CTA - only visible on mobile */}
+                <div className="flex justify-center lg:hidden mt-8">
+                  <AuthButton variant="body" className="w-full sm:w-auto" />
+                </div>
+
+                {/* Desktop CTA - hidden on mobile */}
+                <div className="hidden lg:flex mt-8">
+                  <AuthButton variant="body" className="w-full sm:w-auto" />
+                </div>
+              </div>
+
+              {/* Right side - Floating Image Section (hidden on tablet and below) */}
+              <div className="hidden lg:block relative w-full h-[400px] xl:h-[500px] 2xl:h-[600px]">
+                <div className="relative w-full h-full flex items-center justify-center">
+                  {/* Main floating image - SMALLER size with 85% height */}
+                  <motion.img
+                    src="/images/landing-page/float.png"
+                    alt="main pic"
+                    className="h-[85%] w-auto object-contain z-10"
+                    animate={{
+                      y: [0, -8, 0],
+                      rotate: [0, -1, 1, 0],
+                    }}
+                    transition={{
+                      duration: 6,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      repeatType: "reverse",
+                    }}
+                  />
+
+                  {/* Floating boxes - positioned relative to the container */}
+                  {floatingBoxes.map((box, index) => (
+                    <motion.div
+                      key={index}
+                      className={box.className}
+                      {...box.motionProps}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </section>
 
-          {/* Floating Image Section */}
-          <section className="hidden lg:block relative w-full h-[300px] sm:h-[400px] md:h-[500px] my-12 md:my-16">
-            <motion.img
-              src="/images/landing-page/float.png"
-              alt="main pic"
-              className="w-full h-full object-contain mx-auto px-4"
-              animate={{
-                y: [0, -4, 0],
-                rotate: [0, -3, 3, 0],
-              }}
-              transition={{
-                duration: 7,
-                repeat: Infinity,
-                ease: "easeInOut",
-                repeatType: "reverse",
-              }}
-            />
-
-            {/* Floating boxes - hidden on mobile */}
-            {floatingBoxes.map((box, index) => (
-              <motion.div
-                key={index}
-                className={box.className}
-                {...box.motionProps}
-              />
-            ))}
-          </section>
-
-          {/* Steps section */}
-          <section className="px-4 lg:px-40 py-10 lg:py-20">
-            <div className="grid gap-8 md:gap-16 md:grid-cols-3">
+          {/* Steps section - adjusted for tablet */}
+          <section className="px-4 md:px-8 lg:px-20 xl:px-40 py-10 lg:py-20">
+            <div className="grid gap-8 md:gap-10 lg:gap-16 md:grid-cols-3">
               {stepCards.map((card, index) => (
                 <div
                   key={index}
                   className="relative flex flex-col items-center"
                 >
-                  <div className="bg-white shadow-md px-6 pb-8 w-full text-center border border-gray-200 rounded-lg overflow-hidden relative min-h-[400px] lg:min-h-[450px]">
+                  <div className="bg-white shadow-md px-6 pb-8 w-full text-center border border-gray-200 rounded-lg overflow-hidden relative min-h-[350px] md:min-h-[380px] lg:min-h-[400px] xl:min-h-[450px]">
                     {/* Doodle image inside the card - made larger */}
-                    <div className="h-48 md:h-56 lg:h-64 flex items-center justify-center -mt-2 mb-6 relative">
+                    <div className="h-40 md:h-48 lg:h-56 xl:h-64 flex items-center justify-center -mt-2 mb-6 relative">
                       <motion.img
                         src={card.image}
                         alt={card.title}
-                        className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 object-contain"
+                        className="w-36 h-36 md:w-40 md:h-40 lg:w-44 lg:h-44 xl:w-56 xl:h-56 object-contain"
                         {...card.motionProps}
                       />
                     </div>
 
-                    <h2 className="text-xl lg:text-2xl font-bold mb-4 whitespace-pre-line">
+                    <h2 className="text-xl lg:text-xl xl:text-2xl font-bold mb-4 whitespace-pre-line">
                       {card.title}
                     </h2>
                     <p className="text-gray-600 text-base leading-relaxed">
@@ -256,8 +267,8 @@ const App: React.FC = () => {
             </div>
           </section>
 
-          {/* Feature cards */}
-          <div className="grid gap-6 md:gap-8 md:grid-cols-3 bg-white border border-gray-200 rounded-xl shadow-sm w-full max-w-5xl mx-auto p-6 lg:p-8 my-8 lg:my-16">
+          {/* Feature cards - adjusted for tablet */}
+          <div className="grid gap-6 md:gap-6 lg:gap-8 md:grid-cols-3 bg-white border border-gray-200 rounded-xl shadow-sm w-full max-w-4xl lg:max-w-5xl mx-auto p-4 md:p-6 lg:p-8 my-8 lg:my-16">
             {featureCards.map((card, index) => (
               <a
                 key={index}
@@ -271,7 +282,7 @@ const App: React.FC = () => {
                   <h3 className="text-lg lg:text-xl font-medium text-gray-900 mb-2 group-hover:scale-[1.02] transition-transform duration-300">
                     {card.title}
                   </h3>
-                  <p className="text-base text-gray-600 text-center max-w-xs leading-relaxed group-hover:translate-y-0.5 transition-transform duration-300">
+                  <p className="text-sm md:text-base text-gray-600 text-center max-w-xs leading-relaxed group-hover:translate-y-0.5 transition-transform duration-300">
                     {card.description}
                   </p>
                   <div className="absolute bottom-0 left-1/2 h-[2px] w-0 bg-gray-800 transform -translate-x-1/2 group-hover:w-[calc(100%-3rem)] transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]" />
