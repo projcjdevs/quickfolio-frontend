@@ -4,37 +4,44 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FiSave, FiEye } from "react-icons/fi";
 import dynamic from 'next/dynamic';
-import { PortfolioData, DEFAULT_PROFILE, DEFAULT_COLORS } from "@/components/PortfolioEditor/types";
+import { PortfolioData, DEFAULT_PROFILE, TEMPLATE_DEFAULT_COLORS } from "@/components/PortfolioEditor/types";
 import EditorShell from "@/components/PortfolioEditor/components/EditorShell";
 import TemplatePlaceholder from "@/components/PortfolioEditor/components/templates/TemplatePlaceholder";
 
-type TemplateComponent = React.ComponentType<{ data: PortfolioData }>;
+// Define the exact props type for template components
+type TemplateComponentProps = {
+  data: PortfolioData; // Make data required
+};
 
-const AVAILABLE_TEMPLATES = {
+type TemplateComponent = React.ComponentType<TemplateComponentProps>;
+
+type TemplateKey = keyof typeof TEMPLATE_DEFAULT_COLORS;
+
+// Create a typed dynamic import function
+const createDynamicTemplate = (loader: () => Promise<{ default: React.ComponentType<TemplateComponentProps> }>) => {
+  return dynamic(loader, {
+    ssr: false,
+    loading: () => <TemplatePlaceholder name="Loading..." />
+  }) as TemplateComponent; // Explicit cast to TemplateComponent
+};
+
+const AVAILABLE_TEMPLATES: Record<TemplateKey, {
+  name: string;
+  component: TemplateComponent;
+}> = {
   cosmic: {
     name: "Cosmic Glow",
-    component: dynamic(() => import("@/components/PortfolioEditor/components/templates/CosmicGlowPortfolio").then(mod => ({ default: mod.default })), {
-      ssr: false,
-      loading: () => <TemplatePlaceholder name="Cosmic Glow" />
-    }) as TemplateComponent
-  },
-  simple: {
-    name: "Simple Portfolio",
-    component: dynamic(() => import("@/components/PortfolioEditor/components/templates/SimplePortfolio").then(mod => ({ default: mod.default })), {
-      ssr: false,
-      loading: () => <TemplatePlaceholder name="Simple Portfolio" />
-    }) as TemplateComponent
+    component: createDynamicTemplate(() => import("@/components/PortfolioEditor/components/templates/CosmicGlowPortfolio"))
   },
   medPortfolio: {
     name: "Medical Minimal",
-    component: dynamic(() => import("@/components/PortfolioEditor/components/templates/MedPortfolio").then(mod => ({ default: mod.default })), {
-      ssr: false,
-      loading: () => <TemplatePlaceholder name="Medical Minimal" />
-    }) as TemplateComponent
+    component: createDynamicTemplate(() => import("@/components/PortfolioEditor/components/templates/MedPortfolio"))
+  },
+  minimal: {
+    name: "Simple Portfolio",
+    component: createDynamicTemplate(() => import("@/components/PortfolioEditor/components/templates/SimplePortfolio"))
   },
 };
-
-type TemplateKey = keyof typeof AVAILABLE_TEMPLATES;
 
 interface PortfolioEditorProps {
   initialTemplate?: TemplateKey;
@@ -48,7 +55,13 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
       ...DEFAULT_PROFILE,
       config: { 
         ...DEFAULT_PROFILE.config, 
-        template: initialTemplate 
+        template: initialTemplate,
+        colors: {
+          primary: TEMPLATE_DEFAULT_COLORS[initialTemplate].primary,
+          secondary: TEMPLATE_DEFAULT_COLORS[initialTemplate].secondary,
+          background: TEMPLATE_DEFAULT_COLORS[initialTemplate].background,
+          text: TEMPLATE_DEFAULT_COLORS[initialTemplate].text,
+        }
       }
     };
 
@@ -57,6 +70,11 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
         const saved = localStorage.getItem('portfolio-data');
         if (saved) {
           const parsed = JSON.parse(saved);
+          const template = (parsed.config?.template as TemplateKey) || initialTemplate;
+          
+          // Extract only non-editable colors from saved data
+          const { primary, secondary, background, text, ...otherColors } = parsed.config?.colors || {};
+          
           return {
             ...defaultData,
             ...parsed,
@@ -66,11 +84,14 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
             },
             config: { 
               ...defaultData.config,
+              template,
               colors: { 
-                ...defaultData.config.colors, 
-                ...(parsed.config?.colors || {}) 
+                primary: TEMPLATE_DEFAULT_COLORS[template].primary,
+                secondary: TEMPLATE_DEFAULT_COLORS[template].secondary,
+                background: TEMPLATE_DEFAULT_COLORS[template].background,
+                text: TEMPLATE_DEFAULT_COLORS[template].text,
+                ...otherColors
               },
-              template: (parsed.config?.template as TemplateKey) || initialTemplate
             }
           };
         }
@@ -81,16 +102,28 @@ export default function PortfolioEditor({ initialTemplate = 'cosmic' }: Portfoli
     return defaultData;
   });
 
-
-  // Sync template with portfolio data
+  // Sync template with portfolio data and apply template-specific colors
   useEffect(() => {
-    setPortfolioData(prev => ({
-      ...prev,
-      config: {
-        ...prev.config,
-        template: selectedTemplate,
-      },
-    }));
+    setPortfolioData(prev => {
+      const templateColors = TEMPLATE_DEFAULT_COLORS[selectedTemplate];
+      // Extract only non-editable colors from previous data
+      const { primary, secondary, background, text, ...otherColors } = prev.config.colors || {};
+      
+      return {
+        ...prev,
+        config: {
+          ...prev.config,
+          template: selectedTemplate,
+          colors: {
+            primary: templateColors.primary,
+            secondary: templateColors.secondary,
+            background: templateColors.background,
+            text: templateColors.text,
+            ...otherColors
+          },
+        },
+      };
+    });
   }, [selectedTemplate]);
 
   // Auto-save to localStorage

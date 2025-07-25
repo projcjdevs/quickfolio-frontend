@@ -1,16 +1,32 @@
-"use client";
+'use client';
 
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { FiMail, FiGithub, FiLinkedin, FiAward, FiBriefcase, FiBook } from "react-icons/fi";
 import { useEffect, useState } from "react";
-import { PortfolioData, DEFAULT_COLORS, DEFAULT_PROFILE } from "@/components/PortfolioEditor/types";
+import { PortfolioData, DEFAULT_PROFILE } from "@/components/PortfolioEditor/types";
 
 const DEFAULT_PARTICLE_COUNT = 50;
 
-// ===== MAIN COMPONENT ===== //
+// Helper function to generate derived colors
+const generateDerivedColors = (baseColors: {
+  primary: string;
+  secondary: string;
+  background: string;
+  text: string;
+}) => {
+  return {
+    ...baseColors,
+    accent: baseColors.primary, // Use primary as accent
+    bg: baseColors.background, // Background is the same as the main background
+    dust: `${baseColors.text}30`, // Semi-transparent text color for dust particles
+    glow: `${baseColors.primary}80`, // Glowing effect using primary color
+    highlight: baseColors.secondary, // Use secondary as highlight
+  };
+};
+
 export default function CosmicGlowPortfolio({ data = {} as PortfolioData }) {
   try {
-    // ===== DATA MERGING WITH SAFE DEFAULTS ===== //
+    // Merge data with defaults
     const mergedData = {
       ...DEFAULT_PROFILE,
       ...(data || {}),
@@ -19,21 +35,19 @@ export default function CosmicGlowPortfolio({ data = {} as PortfolioData }) {
         ...(data?.contact || {})
       },
       config: {
-        colors: {
-          ...DEFAULT_COLORS,
-          ...(data?.config?.colors || {})
-        },
+        ...DEFAULT_PROFILE.config,
+        ...(data?.config || {}),
         particleDensity: data?.config?.particleDensity || DEFAULT_PARTICLE_COUNT
       }
     };
 
-    const COLORS = mergedData.config.colors;
+    // Generate full color scheme from the editable colors
+    const COLORS = generateDerivedColors(mergedData.config.colors);
 
-    // ===== ANIMATION CONTROLS ===== //
+    // Rest of your component remains the same...
     const controls = useAnimation();
     const [showContent, setShowContent] = useState(false);
 
-    // ===== DYNAMIC PARTICLES ===== //
     const particles = Array.from({ length: mergedData.config.particleDensity }).map((_, i) => {
       const isHighlight = Math.random() > 0.7;
       return {
@@ -49,7 +63,6 @@ export default function CosmicGlowPortfolio({ data = {} as PortfolioData }) {
       };
     });
 
-    // ===== ANIMATION SEQUENCE ===== //
     useEffect(() => {
       const sequence = async () => {
         await controls.start({ 
@@ -277,7 +290,7 @@ export default function CosmicGlowPortfolio({ data = {} as PortfolioData }) {
                           icon={<FiMail />} 
                           text="EMAIL" 
                           href={`mailto:${mergedData.contact.email}`} 
-                          color={COLORS.highlight}
+                          color={COLORS.secondary}
                           textColor={COLORS.text}
                         />
                       )}
@@ -286,7 +299,7 @@ export default function CosmicGlowPortfolio({ data = {} as PortfolioData }) {
                           icon={<FiGithub />} 
                           text="GITHUB" 
                           href={`https://github.com/${mergedData.contact.github}`} 
-                          color={COLORS.text}
+                          color={COLORS.secondary}
                           textColor={COLORS.text}
                         />
                       )}
@@ -295,7 +308,7 @@ export default function CosmicGlowPortfolio({ data = {} as PortfolioData }) {
                           icon={<FiLinkedin />} 
                           text="LINKEDIN" 
                           href={`https://linkedin.com/in/${mergedData.contact.linkedin}`} 
-                          color={COLORS.text}
+                          color={COLORS.secondary}
                           textColor={COLORS.text}
                         />
                       )}
