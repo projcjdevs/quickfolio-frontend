@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { PortfolioData, DEFAULT_PROFILE } from '@/components/types';
+import { PortfolioData, DEFAULT_PROFILE } from '@/components/PortfolioEditor/types';
 import dynamic from 'next/dynamic';
 import { FiX, FiRotateCw, FiAlertCircle, FiMoon, FiSun } from 'react-icons/fi';
 
@@ -11,15 +11,15 @@ const PreviewUIContext = React.createContext({
 });
 
 const templateComponents = {
-  cosmic: dynamic(() => import('@/components/templates/CosmicGlowPortfolio'), {
+  cosmic: dynamic(() => import('@/components/PortfolioEditor/components/templates/CosmicGlowPortfolio'), {
     loading: () => <TemplateSkeleton />,
     ssr: false
   }),
-  simple: dynamic(() => import('@/components/templates/SimplePortfolio'), {
+  simple: dynamic(() => import('@/components/PortfolioEditor/components/templates/SimplePortfolio'), {
     loading: () => <TemplateSkeleton />,
     ssr: false
   }),
-  medPortfolio: dynamic(() => import('@/components/templates/MedPortfolio'), {
+  medPortfolio: dynamic(() => import('@/components/PortfolioEditor/components/templates/MedPortfolio'), {
     loading: () => <TemplateSkeleton />,
     ssr: false
   })

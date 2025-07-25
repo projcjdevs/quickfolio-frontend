@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { FiMail, FiLinkedin } from "react-icons/fi";
 import { FiBook, FiBriefcase, FiUserCheck, FiAward } from "react-icons/fi";
 import { useEffect, useState, useRef } from "react";
-import { PortfolioData, DEFAULT_PROFILE } from "../types";
+import { PortfolioData, DEFAULT_PROFILE } from "@/components/PortfolioEditor/types";
 
 const DEFAULT_PARTICLE_COUNT = 0;
 
