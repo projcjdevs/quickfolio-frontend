@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { PortfolioData, DEFAULT_PROFILE } from "../types";
+import { PortfolioData, DEFAULT_PROFILE } from "@/components/PortfolioEditor/types";
 
 export default function SimplePortfolio({ data = {} as PortfolioData }) {
   // Ensure data exists with fallbacks

@@ -3,7 +3,7 @@
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { FiMail, FiGithub, FiLinkedin, FiAward, FiBriefcase, FiBook } from "react-icons/fi";
 import { useEffect, useState } from "react";
-import { PortfolioData, DEFAULT_COLORS, DEFAULT_PROFILE } from "../types";
+import { PortfolioData, DEFAULT_COLORS, DEFAULT_PROFILE } from "@/components/PortfolioEditor/types";
 
 const DEFAULT_PARTICLE_COUNT = 50;
 

@@ -1,11 +1,10 @@
-"use client";
-
-import { useSearchParams } from 'next/navigation';
-import PortfolioEditor from '@/components/PortfolioEditor';
+// src/app/edit/page.tsx
+import PortfolioEditor from "@/components/PortfolioEditor/PortfolioEditor";
 
 export default function EditPage() {
-  const searchParams = useSearchParams();
-  const template = searchParams.get('template') || 'cosmic';
-  
-  return <PortfolioEditor initialTemplate={template} />;
+  return (
+    <div className="min-h-screen">
+      <PortfolioEditor />
+    </div>
+  );
 }

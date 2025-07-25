@@ -35,3 +35,11 @@ body {
   font-family: var(--font-poppins), sans-serif;
 }
 
+.touch-none {
+  touch-action: none;
+}
+
+.scroll-touch {
+  -webkit-overflow-scrolling: touch;
+}
+
